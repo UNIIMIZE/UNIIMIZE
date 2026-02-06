@@ -154,6 +154,10 @@
             -webkit-text-fill-color: transparent;
         }
 
+        h1:hover {
+        text-decoration: none;
+        }
+
         .lead {
             font-size: 1.25rem;
             color: var(--text-muted);
