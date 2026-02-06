@@ -1,6 +1,3 @@
-<!doctype html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/598623fc3bcd4259bc646f7b3f845e915c860538/favicon.svg" />
 
     <style>
         :root {
@@ -399,9 +396,6 @@
     </div>
 
     <div class="container">
-        <nav>
-            <div class="logo">UNIIMIZE</div>
-        </nav>
 
         <section class="hero">
             <span class="badge">v2.0 Now Available</span>
