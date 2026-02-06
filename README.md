@@ -1,10 +1,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>UNIIMIZE — Digital Tools, Simplified</title>
+<title>UNIIMIZE — A Platform for Practical Tools</title>
 
 <meta name="description"
-content="Fast and privacy-aware PDF and Image tools that run directly in your browser. Built for clarity, speed, and modern workflows." />
+content="UNIIMIZE is a multi-domain platform offering practical online tools across documents, media, productivity, utilities, and more." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,229 +14,194 @@ content="Fast and privacy-aware PDF and Image tools that run directly in your br
 href="https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/598623fc3bcd4259bc646f7b3f845e915c860538/favicon.svg">
 
 <style>
-:root {
-    --bg: #ffffff;
-    --surface: #f8fafc;
-    --surface-2: #eef2f7;
-    --border: #e2e8f0;
-    --text: #0f172a;
-    --muted: #64748b;
-    --accent: #4f46e5;
-    --accent-2: #ec4899;
-    --radius: 20px;
-    --ease: cubic-bezier(.2,.8,.2,1);
+:root{
+  --bg:#ffffff;
+  --surface:#f8fafc;
+  --glass:rgba(255,255,255,.65);
+  --border:#e2e8f0;
+  --text:#0f172a;
+  --muted:#64748b;
+  --accent:#4f46e5;
+  --accent-2:#ec4899;
+  --radius:24px;
+  --ease:cubic-bezier(.2,.8,.2,1);
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Inter,system-ui,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 500px at 10% -10%,#eef2ff,transparent),
+    radial-gradient(800px 400px at 90% 0%,#fce7f3,transparent),
+    var(--bg);
+  line-height:1.6;
 }
 
-body {
-    font-family: Inter, system-ui, sans-serif;
-    background:
-        radial-gradient(1000px 500px at 10% -10%, #eef2ff, transparent),
-        radial-gradient(800px 400px at 90% 0%, #fce7f3, transparent),
-        var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-}
+a{color:inherit;text-decoration:none}
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.container {
-    max-width: 1200px;
-    padding: 0 24px;
-    margin: 0 auto;
-}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
 
 /* NAV */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 28px 0;
+nav{
+  padding:28px 0;
+  display:flex;
+  align-items:center;
 }
 
-.logo {
-    font-weight: 900;
-    font-size: 1.35rem;
-    letter-spacing: -0.03em;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.logo{
+  font-weight:900;
+  font-size:1.4rem;
+  letter-spacing:-.03em;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 /* HERO */
-.hero {
-    padding: 100px 0 80px;
-    text-align: center;
+.hero{
+  padding:120px 0 90px;
+  text-align:center;
 }
 
-.hero h1 {
-    font-size: clamp(2.6rem, 7vw, 4.2rem);
-    font-weight: 900;
-    letter-spacing: -0.045em;
-    margin-bottom: 24px;
+.hero h1{
+  font-size:clamp(3rem,7vw,4.8rem);
+  font-weight:900;
+  letter-spacing:-.045em;
+  margin-bottom:28px;
 }
 
-.hero p {
-    max-width: 640px;
-    margin: 0 auto 48px;
-    color: var(--muted);
-    font-size: 1.15rem;
+.hero p{
+  max-width:760px;
+  margin:0 auto 56px;
+  font-size:1.2rem;
+  color:var(--muted);
 }
 
 /* SEARCH */
-.search {
-    max-width: 520px;
-    margin: 0 auto;
-    position: relative;
+.search{
+  max-width:620px;
+  margin:0 auto;
+  position:relative;
 }
 
-.search input {
-    width: 100%;
-    padding: 18px 24px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: white;
-    color: var(--text);
-    font-size: 1rem;
-    transition: border .3s var(--ease), box-shadow .3s var(--ease);
+.search input{
+  width:100%;
+  padding:20px 26px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:white;
+  font-size:1.05rem;
 }
 
-.search input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(79,70,229,.15);
+.search input:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(79,70,229,.15);
 }
 
-.results {
-    position: absolute;
-    top: calc(100% + 12px);
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: none;
-    z-index: 20;
-    box-shadow: 0 20px 40px -12px rgba(0,0,0,.12);
+/* PLATFORM SECTIONS */
+.section{
+  margin-top:120px;
 }
 
-.result {
-    padding: 14px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: background .2s;
+.section-header{
+  max-width:700px;
+  margin-bottom:48px;
 }
 
-.result:hover {
-    background: var(--surface);
+.section-header h2{
+  font-size:2.2rem;
+  letter-spacing:-.03em;
+  margin-bottom:12px;
 }
 
-.tag {
-    font-size: .7rem;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 999px;
+.section-header p{
+  color:var(--muted);
 }
 
-.tag.pdf { background: #fff7ed; color: #c2410c; }
-.tag.img { background: #f0f9ff; color: #0284c7; }
-
-/* TOOL GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
-    margin-top: 80px;
+/* CATEGORY GRID */
+.categories{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:32px;
 }
 
-.card {
-    background: linear-gradient(180deg, white, var(--surface));
-    border: 1px solid var(--border);
-    border-radius: 28px;
-    padding: 44px;
-    display: flex;
-    flex-direction: column;
-    min-height: 260px;
-    transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+.category{
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.9),var(--surface));
+  border:1px solid var(--border);
+  border-radius:32px;
+  padding:48px;
+  display:flex;
+  flex-direction:column;
+  min-height:280px;
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease);
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 30px 60px -20px rgba(15,23,42,.2);
+.category:hover{
+  transform:translateY(-10px);
+  box-shadow:0 40px 80px -30px rgba(15,23,42,.25);
 }
 
-.card h2 {
-    font-size: 2rem;
-    margin-bottom: 12px;
+.category h3{
+  font-size:1.9rem;
+  margin-bottom:14px;
 }
 
-.card p {
-    color: var(--muted);
-    flex-grow: 1;
+.category p{
+  color:var(--muted);
+  flex-grow:1;
 }
 
-.card span {
-    font-weight: 700;
-    margin-top: 24px;
+.category span{
+  margin-top:28px;
+  font-weight:700;
+  font-size:.95rem;
 }
 
-/* FEATURES */
-.features {
-    margin: 120px 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-    gap: 40px;
+/* VALUES */
+.values{
+  margin:140px 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:48px;
 }
 
-.feature h3 {
-    margin-bottom: 8px;
-    font-size: 1.1rem;
+.value h4{
+  font-size:1.1rem;
+  margin-bottom:10px;
 }
 
-.feature p {
-    color: var(--muted);
-    font-size: .95rem;
+.value p{
+  color:var(--muted);
+  font-size:.95rem;
 }
 
 /* FOOTER */
-footer {
-    border-top: 1px solid var(--border);
-    padding: 40px 0;
-    text-align: center;
-    color: var(--muted);
-    font-size: .85rem;
-    background: var(--surface);
+footer{
+  border-top:1px solid var(--border);
+  padding:44px 0;
+  background:var(--surface);
+  text-align:center;
+  font-size:.85rem;
+  color:var(--muted);
 }
 
-/* HARD RULE: NO TEXT DECORATION */
+/* HARD RULE */
 a:hover,
 h1:hover,
 h2:hover,
 h3:hover,
-p:hover {
-    text-decoration: none !important;
+p:hover{
+  text-decoration:none !important;
 }
 
 /* MOBILE */
-@media (max-width: 640px) {
-    .hero {
-        padding: 70px 0;
-    }
-    .card {
-        padding: 32px;
-    }
+@media(max-width:640px){
+  .hero{padding:80px 0}
+  .category{padding:36px}
 }
 </style>
 </head>
@@ -245,95 +210,75 @@ p:hover {
 <div class="container">
 
 <nav>
-    <div class="logo">UNIIMIZE</div>
+  <div class="logo">UNIIMIZE</div>
 </nav>
 
 <section class="hero">
-    <h1>Clean Tools.<br>Real Productivity.</h1>
+  <h1>A Platform of Useful Tools.</h1>
+  <p>
+    UNIIMIZE brings together practical online tools across multiple domains —
+    documents, media, productivity, utilities, and beyond — under one clean interface.
+  </p>
+
+  <div class="search">
+    <input placeholder="Search tools, categories, or features…" />
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2>Tool Categories</h2>
     <p>
-        Edit PDFs and images directly in your browser with modern,
-        privacy-aware workflows designed for speed and clarity.
+      Each category is a focused toolkit designed to solve real-world problems
+      efficiently and without unnecessary complexity.
     </p>
+  </div>
 
-    <div class="search">
-        <input id="search" placeholder="Search tools (merge, compress, resize…)" />
-        <div class="results" id="results"></div>
-    </div>
-</section>
-
-<section class="grid">
-    <a class="card" href="./pdfory/index.html">
-        <h2 style="color:#ff6a00">PDFORY</h2>
-        <p>Merge, split, compress, and protect PDF documents with precision.</p>
-        <span>Open PDF Toolkit →</span>
+  <div class="categories">
+    <a class="category" href="./pdfory/index.html">
+      <h3 style="color:#ff6a00">Documents</h3>
+      <p>PDFs and document utilities built for accuracy, speed, and reliability.</p>
+      <span>Explore Document Tools →</span>
     </a>
 
-    <a class="card" href="./editaroo/index.html">
-        <h2 style="color:#0ea5e9">EDITAROO</h2>
-        <p>Resize, crop, convert, and enhance images without unnecessary steps.</p>
-        <span>Open Image Toolkit →</span>
+    <a class="category" href="./editaroo/index.html">
+      <h3 style="color:#0ea5e9">Media</h3>
+      <p>Image and visual tools for editing, conversion, and enhancement.</p>
+      <span>Explore Media Tools →</span>
     </a>
+
+    <div class="category">
+      <h3 style="color:#22c55e">Productivity</h3>
+      <p>Time, planning, conversion, and workflow utilities for everyday tasks.</p>
+      <span>In Development</span>
+    </div>
+
+    <div class="category">
+      <h3 style="color:#a855f7">Utilities</h3>
+      <p>General-purpose tools across multiple technical and non-technical fields.</p>
+      <span>Expanding Platform</span>
+    </div>
+  </div>
 </section>
 
-<section class="features">
-    <div class="feature">
-        <h3>Privacy-Aware</h3>
-        <p>Designed to reduce unnecessary data transfer.</p>
-    </div>
-    <div class="feature">
-        <h3>High Performance</h3>
-        <p>Optimized for modern browsers and devices.</p>
-    </div>
-    <div class="feature">
-        <h3>Simple by Default</h3>
-        <p>No clutter. No learning curve.</p>
-    </div>
+<section class="values">
+  <div class="value">
+    <h4>Platform-First Design</h4>
+    <p>Built to support hundreds of tools without fragmentation.</p>
+  </div>
+  <div class="value">
+    <h4>Focused Experiences</h4>
+    <p>Each tool solves one problem well instead of doing everything poorly.</p>
+  </div>
+  <div class="value">
+    <h4>Scalable Architecture</h4>
+    <p>New domains and categories can be added without redesign.</p>
+  </div>
 </section>
 
 <footer>
-    © 2026 UNIIMIZE Inc. All rights reserved.
+  © 2026 UNIIMIZE Inc. All rights reserved.
 </footer>
 
 </div>
-
-<script>
-const tools = [
-    { name:"Merge PDF", url:"./pdfory/tools/merge-pdf.html", type:"pdf" },
-    { name:"Compress PDF", url:"./pdfory/tools/compress-pdf.html", type:"pdf" },
-    { name:"Split PDF", url:"./pdfory/tools/split-pdf.html", type:"pdf" },
-    { name:"Resize Image", url:"./editaroo/tools/resize-image.html", type:"img" },
-    { name:"Crop Image", url:"./editaroo/tools/crop-image.html", type:"img" },
-    { name:"Convert Image", url:"./editaroo/tools/convert-image.html", type:"img" }
-];
-
-const input = document.getElementById("search");
-const results = document.getElementById("results");
-
-input.addEventListener("input", e => {
-    const q = e.target.value.toLowerCase();
-    if (q.length < 2) {
-        results.style.display = "none";
-        return;
-    }
-
-    const matches = tools.filter(t => t.name.toLowerCase().includes(q));
-    if (!matches.length) {
-        results.style.display = "none";
-        return;
-    }
-
-    results.innerHTML = matches.map(t => `
-        <div class="result" onclick="location.href='${t.url}'">
-            ${t.name}
-            <span class="tag ${t.type}">${t.type.toUpperCase()}</span>
-        </div>
-    `).join("");
-    results.style.display = "block";
-});
-
-document.addEventListener("click", e => {
-    if (!e.target.closest(".search")) results.style.display = "none";
-});
-</script>
-
 </body>
