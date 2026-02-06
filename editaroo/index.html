@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EDITAROO — Free Online Image Toolkit</title>
+    <meta name="description"
+        content="Professional Image tools for everyone. Compress, convert, resize, and edit images locally in your browser." />
+    <meta property="og:title" content="EDITAROO — Free Online Image Toolkit" />
+    <meta property="og:description" content="Professional Image tools. Processed 100% in your browser." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0ea5e9" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-soft: #e0f2fe;
+            --text: #0f172a;
+            --text-soft: #475569;
+            --bg: #f8fafc;
+            --surface: rgba(255, 255, 255, 0.8);
+            --border: rgba(14, 165, 233, 0.1);
+            --shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.08);
+            --radius: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Syne', sans-serif;
+            line-height: 1.1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.2s;
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: #e0f2fe;
+            top: -100px;
+            right: -100px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #bae6fd;
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(-30px, -50px) scale(1.1);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .nav-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .switch-btn {
+            background: #fff7ed;
+            color: #f97316;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .switch-btn:hover {
+            background: #ffedd5;
+            transform: translateY(-1px);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #0f172a 50%, #0ea5e9 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.4);
+        }
+
+        /* Tools Grid */
+        .tools-section {
+            padding: 0 0 120px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.1);
+        }
+
+        .tool-card h3 {
+            margin: 0 0 10px 0;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tool-card p {
+            margin: 0 0 20px 0;
+            color: var(--text-soft);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .card-link {
+            margin-top: auto;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 0;
+            background: linear-gradient(to bottom, #fff, #f0f9ff);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #e0f2fe;
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-copy h2 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin: 0 0 24px 0;
+            font-family: 'Syne', sans-serif;
+            letter-spacing: -1px;
+        }
+
+        .about-copy p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--text-soft);
+            margin-bottom: 32px;
+        }
+
+        .about-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            gap: 16px;
+        }
+
+        .about-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .about-list li::before {
+            content: "✓";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .about-cards {
+            display: grid;
+            gap: 24px;
+        }
+
+        .about-card {
+            background: white;
+            padding: 32px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(2, 132, 199, 0.1);
+        }
+
+        .about-card h3 {
+            font-size: 1.4rem;
+            margin: 0 0 8px 0;
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Reviews */
+        .reviews-section {
+            padding: 100px 0;
+            background: #fff;
+        }
+
+        .section-head {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .section-head h2 {
+            font-size: 3rem;
+            font-family: 'Syne', sans-serif;
+            margin-bottom: 16px;
+        }
+
+        .section-head p {
+            color: var(--text-soft);
+            font-size: 1.2rem;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 24px;
+            position: relative;
+        }
+
+        .review-card::before {
+            content: "“";
+            font-family: serif;
+            font-size: 6rem;
+            line-height: 1;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            color: rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+        }
+
+        .review-card p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-card span {
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 100px 0;
+            background: #fff;
+        }
+
+        .faq-list {
+            max-width: 700px;
+            margin: 0 auto;
+            display: grid;
+            gap: 16px;
+        }
+
+        details {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        details:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        details[open] {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        summary {
+            font-weight: 600;
+            font-size: 1.1rem;
+            list-style: none;
+            position: relative;
+            padding-right: 40px;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 300;
+            transition: transform 0.3s;
+        }
+
+        details[open] summary::after {
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        details p {
+            margin: 16px 0 0;
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 100px 0;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-inner h2 {
+            font-size: 3.5rem;
+            font-family: 'Syne', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .cta-inner p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .cta .btn {
+            display: inline-block;
+            width: auto;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            text-decoration: none;
+            background: white;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .cta .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 900px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-copy h2,
+            .section-head h2,
+            .cta-inner h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .switch-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header>
+        <div class="container nav-wrap">
+            <a href="#" class="brand">EDITAROO</a>
+            <a href="https://uniimize.in" class="switch-btn">
+                TOOLKITS
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7" />
+                    <path d="M7 7h10v10" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <span class="badge">Local & Fast</span>
+                <h1>Polish your pixels.</h1>
+                <p class="lead">Compress, convert, resize, and edit instantly. No uploads, no waiting, 100% private.</p>
+                <a href="#tools" class="btn btn-primary">Start Editing</a>
+            </div>
+        </section>
+
+        <section class="tools-section" id="tools">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Image Tools</h3>
+                    <p style="color:var(--text-soft)">Select a tool to get started.</p>
+                </div>
+
+                <div class="tool-grid">
+                    <a href="tools/compress-image.html" class="tool-card">
+                        <h3>Compress Image</h3>
+                        <p>Shrink file size for JPG, PNG, and WEBP without quality loss.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/convert-image.html" class="tool-card">
+                        <h3>Convert Image</h3>
+                        <p>Turn images into JPG, PNG, or WEBP instantly.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/resize-image.html" class="tool-card">
+                        <h3>Resize Image</h3>
+                        <p>Scale your images to exact pixel dimensions.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/crop-image.html" class="tool-card">
+                        <h3>Crop Image</h3>
+                        <p>Trim the edges and focus on what matters.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/filter-image.html" class="tool-card">
+                        <h3>Filter Image</h3>
+                        <p>Apply beautiful presets like Grayscale, Sepia, and more.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/rotate-image.html" class="tool-card">
+                        <h3>Rotate Image</h3>
+                        <p>Rotate your images left or right instantly.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/flip-image.html" class="tool-card">
+                        <h3>Flip Image</h3>
+                        <p>Mirror your images vertically or horizontally.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/watermark-image.html" class="tool-card">
+                        <h3>Watermark Image</h3>
+                        <p>Stamp text or logos to protect your work.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/meme-generator.html" class="tool-card">
+                        <h3>Meme Generator</h3>
+                        <p>Add classic top & bottom text to any photo.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                    <a href="tools/color-picker.html" class="tool-card">
+                        <h3>Color Picker</h3>
+                        <p>Extract hex and RGB colors from your images instantly.</p>
+                        <span class="card-link">Use Tool →</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features / About Section -->
+        <section class="about-section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-copy">
+                        <span class="pill">Why EDITAROO?</span>
+                        <h2>Editor quality.<br>Browser speed.</h2>
+                        <p>
+                            Editing images shouldn't require expensive software or slow uploads.
+                            Editaroo gives you professional-grade tools that run entirely on your device.
+                        </p>
+                        <ul class="about-list">
+                            <li>No Software Install</li>
+                            <li>No Account Required</li>
+                            <li>100% Private (No Uploads)</li>
+                        </ul>
+                    </div>
+                    <div class="about-cards">
+                        <div class="about-card">
+                            <h3>⚡ Lightning Fast</h3>
+                            <p>Since we use your browser's power, edits are applied instantly without server lag.</p>
+                        </div>
+                        <div class="about-card">
+                            <h3>🎨 Crystal Clear Quality</h3>
+                            <p>We use advanced algorithms to ensure your images stay sharp during every edit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="reviews-section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Creators love us.</h2>
+                    <p>Join thousands of designers, marketers, and students who use Editaroo daily.</p>
+                </div>
+                <div class="review-grid">
+                    <div class="review-card">
+                        <p>"I used to open Photoshop just to resize an image. Now I use Editaroo. It saves me so much
+                            time."</p>
+                        <span>— Alex R., Frontend Dev</span>
+                    </div>
+                    <div class="review-card">
+                        <p>"The compression tool is magic. Reduced my site images by 70% without looking blurry."</p>
+                        <span>— Jamie L., Blogger</span>
+                    </div>
+                    <div class="review-card">
+                        <p>"Love the filters! They make my social media photos pop instantly."</p>
+                        <span>— Casey M., Influencer</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Common Questions</h2>
+                    <p>Everything you need to know.</p>
+                </div>
+                <div class="faq-list">
+                    <details>
+                        <summary>What formats do you support?</summary>
+                        <p>We support JPG, PNG, WEBP, and GIF for most tools.</p>
+                    </details>
+                    <details>
+                        <summary>Is it free?</summary>
+                        <p>Yes, Editaroo is 100% free with no hidden fees or watermarks.</p>
+                    </details>
+                    <details>
+                        <summary>Does it work offline?</summary>
+                        <p>Yes! Once the page loads, you can edit images even if you lose your internet connection.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-inner">
+                    <h2>Ready to create?</h2>
+                    <p>Start editing your images now. No signup required.</p>
+                    <a href="#tools" class="btn">Explore Tools</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <span>© 2026 EDITAROO. Part of UNIIMIZE.</span>
+            <div style="display:flex; gap:20px;">
+                <a href="../pdfory/privacy.html">Privacy</a>
+                <a href="../pdfory/terms.html">Terms</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
