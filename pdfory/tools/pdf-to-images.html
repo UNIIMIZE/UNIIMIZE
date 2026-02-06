@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PDF to Images — PDFORY</title>
   <meta name="description" content="Convert PDF pages to high-quality PNG images." />
-  <link rel="icon" type="image/svg+xml" href="../../pdfory/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/b8143ac493234f63447479944fb2f21fd444a22b/pdfory/favicon.svg" />
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -420,6 +420,8 @@
 
   <!-- PDF Libs -->
   <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
   <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
@@ -476,6 +478,7 @@
       imageGrid.innerHTML = '';
       renderedPages = [];
       downloadBtn.disabled = true;
+      downloadBtn.textContent = 'Rendering...';
       statusMsg.textContent = 'Rendering pages...';
 
       const scale = parseFloat(scaleSelect.value);
@@ -505,6 +508,7 @@
         imageGrid.appendChild(div);
       }
 
+      downloadBtn.textContent = 'Download All (ZIP)';
       statusMsg.textContent = `${currentPdf.numPages} pages rendered.`;
       downloadBtn.disabled = false;
     }
@@ -518,20 +522,33 @@
     };
 
     downloadBtn.addEventListener('click', async () => {
-      downloadBtn.textContent = 'Downloading...';
+      downloadBtn.textContent = 'Zipping...';
       downloadBtn.disabled = true;
 
-      // Download all with delay
-      renderedPages.forEach((p, idx) => {
-        setTimeout(() => {
-          downloadOne(p.num, p.url);
-        }, idx * 300);
-      });
+      try {
+        const zip = new JSZip();
+        const folder = zip.folder(currentFileName);
 
-      setTimeout(() => {
-        downloadBtn.textContent = 'Download All';
+        renderedPages.forEach(p => {
+          // Remove data prefix to get raw base64
+          const base64Data = p.url.split(',')[1];
+          folder.file(`${currentFileName}-page-${p.num}.png`, base64Data, { base64: true });
+        });
+
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAs(content, `${currentFileName}-images.zip`);
+
+        downloadBtn.textContent = 'Downloaded!';
+        setTimeout(() => {
+          downloadBtn.textContent = 'Download All (ZIP)';
+          downloadBtn.disabled = false;
+        }, 2000);
+      } catch (err) {
+        console.error(err);
+        alert("Error creating ZIP");
+        downloadBtn.textContent = 'Download All (ZIP)';
         downloadBtn.disabled = false;
-      }, renderedPages.length * 300 + 500);
+      }
     });
 
     resetBtn.addEventListener('click', () => location.reload());
