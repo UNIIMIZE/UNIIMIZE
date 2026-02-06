@@ -158,6 +158,17 @@
         text-decoration: none;
         }
 
+         h2:hover {
+        text-decoration: none;
+        }
+
+         h3:hover {
+        text-decoration: none;
+        }
+
+         p:hover {
+        text-decoration: none;
+        }
         .lead {
             font-size: 1.25rem;
             color: var(--text-muted);
