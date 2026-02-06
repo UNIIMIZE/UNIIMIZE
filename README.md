@@ -3,186 +3,397 @@
  Hosted on GitHub
 ========================= -->
 
-<div align="center">
+<!doctype html>
+<html lang="en">
 
-# 🚀 UNIIMIZE
-### One Platform. Multiple Utilities. Zero Friction.
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNIIMIZE — The Ultimate Digital Toolkit</title>
+    <meta name="description"
+        content="Free, private, and local-first digital tools. Edit PDFs and Images securely in your browser with Uniimize." />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-<p>
-A growing ecosystem of fast, privacy-focused, no-nonsense tools — built to save time and scale productivity.
-</p>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            /* Indigo 600 */
+            --primary-light: #e0e7ff;
+            --secondary: #ec4899;
+            /* Pink 500 */
+            --bg: #ffffff;
+            --surface: #f8fafc;
+            /* Slate 50 */
+            --text: #0f172a;
+            /* Slate 900 */
+            --text-muted: #64748b;
+            /* Slate 500 */
+            --border: #e2e8f0;
+        }
 
-<input 
-  type="text" 
-  id="toolSearch" 
-  placeholder="Search tools..." 
-  style="
-    width: 70%;
-    max-width: 420px;
-    padding: 12px 14px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    outline: none;
-    margin: 20px 0;
-  "
-  onkeyup="filterTools()"
-/>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-</div>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
----
+        h1,
+        h2,
+        h3 {
+            line-height: 1.2;
+        }
 
-<style>
-  .tool-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-  }
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
 
-  .tool-card {
-    border: 1px solid #e5e5e5;
-    border-radius: 14px;
-    padding: 18px;
-    background: #ffffff;
-    transition: all 0.25s ease;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.04);
-  }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-  .tool-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 40px rgba(0,0,0,0.08);
-  }
+        /* Hero Background */
+        .bg-glow {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+            background: linear-gradient(to bottom, #fff, #f1f5f9);
+        }
 
-  .tool-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            /* Higher opacity for light theme */
+            animation: float 20s infinite alternate;
+        }
 
-  .tool-desc {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 14px;
-  }
+        .orb-1 {
+            width: 800px;
+            height: 800px;
+            background: #e0e7ff;
+            /* Very light indigo */
+            top: -20%;
+            left: -10%;
+        }
 
-  .tool-link {
-    display: inline-block;
-    padding: 8px 14px;
-    font-size: 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    background: #ff6a00;
-    color: #fff;
-    font-weight: 500;
-  }
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: #fce7f3;
+            /* Very light pink */
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -5s;
+        }
 
-  .tool-link:hover {
-    background: #e85d00;
-  }
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
 
-  .category {
-    font-size: 12px;
-    font-weight: 600;
-    color: #ff6a00;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-</style>
+            100% {
+                transform: translate(40px, 40px);
+            }
+        }
 
----
+        /* Navbar */
+        nav {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-## 🧩 Available Tools
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+        }
 
-<div class="tool-grid" id="toolGrid">
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+        }
 
-  <div class="tool-card" data-name="pdf to image pdfory">
-    <div class="category">PDF Tools</div>
-    <div class="tool-title">PDF to Image</div>
-    <div class="tool-desc">
-      Convert every PDF page into high-quality PNG images instantly.
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        /* Toolkits Grid */
+        .toolkit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-bottom: 120px;
+        }
+
+        .toolkit-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .toolkit-card:hover {
+            transform: translateY(-8px);
+            border-color: transparent;
+        }
+
+        .toolkit-card h2 {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .toolkit-card p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            gap: 12px;
+        }
+
+        /* Specific Card Styles */
+        .card-pdfory h2 {
+            color: #ff6a00;
+        }
+
+        .card-pdfory .card-footer {
+            color: #ff6a00;
+        }
+
+        .card-pdfory:hover {
+            box-shadow: 0 25px 50px -12px rgba(255, 106, 0, 0.15);
+        }
+
+        .card-editaroo h2 {
+            color: #0ea5e9;
+        }
+
+        .card-editaroo .card-footer {
+            color: #0ea5e9;
+        }
+
+        .card-editaroo:hover {
+            box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.15);
+        }
+
+
+        /* Value Props */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 80px;
+            margin-bottom: 100px;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--surface);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .feature h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .feature p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .feature-icon {
+                margin: 0 auto 16px;
+            }
+
+            .toolkit-card {
+                padding: 32px;
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
     </div>
-    <a class="tool-link" href="https://pdfory.uniimize.in" target="_blank">
-      Open Tool →
-    </a>
-  </div>
 
-  <div class="tool-card" data-name="image compressor">
-    <div class="category">Image Tools</div>
-    <div class="tool-title">Image Compressor</div>
-    <div class="tool-desc">
-      Reduce image size without visible quality loss.
+    <div class="container">
+        <nav>
+            <div class="logo">UNIIMIZE</div>
+        </nav>
+
+        <section class="hero">
+            <span class="badge">v2.0 Now Available</span>
+            <h1>The Ultimate<br>Digital Toolkit.</h1>
+            <p class="lead">A suite of powerful tools for your documents and images. <br>Processing happens entirely on
+                your device.</p>
+        </section>
+
+        <div class="toolkit-grid">
+            <a href="./pdfory/index.html" class="toolkit-card card-pdfory">
+                <h2>PDFORY</h2>
+                <p>Merge, split, compress, and convert PDF documents with zero data transfer. The professional standard
+                    for secure document handling.</p>
+                <div class="card-footer">
+                    Open PDF Toolkit
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="./editaroo/index.html" class="toolkit-card card-editaroo">
+                <h2>EDITAROO</h2>
+                <p>Resize, crop, filter, and edit images instantly. From memes to watermarks, everything you need to
+                    polish your visuals.</p>
+                <div class="card-footer">
+                    Open Image Toolkit
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h3>No Uploads</h3>
+                <p>Your files never leave your computer. We use WebAssembly to process everything locally in your
+                    browser.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h3>Lightning Fast</h3>
+                <p>Zero network latency. Edits happens as fast as your processor can handle them.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        <line x1="12" y1="2" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <h3>Works Offline</h3>
+                <p>No internet? No problem. The entire toolkit loads into memory and works without a connection.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 UNIIMIZE Inc. All rights reserved.</p>
+        </footer>
     </div>
-    <a class="tool-link" href="https://imgcompress.uniimize.in" target="_blank">
-      Open Tool →
-    </a>
-  </div>
+</body>
 
-  <div class="tool-card" data-name="pdf merger">
-    <div class="category">PDF Tools</div>
-    <div class="tool-title">PDF Merger</div>
-    <div class="tool-desc">
-      Merge multiple PDFs into a single file in seconds.
-    </div>
-    <a class="tool-link" href="https://pdfmerge.uniimize.in" target="_blank">
-      Open Tool →
-    </a>
-  </div>
-
-  <div class="tool-card" data-name="text utilities">
-    <div class="category">Text Tools</div>
-    <div class="tool-title">Text Utilities</div>
-    <div class="tool-desc">
-      Clean, format, and transform text with precision.
-    </div>
-    <a class="tool-link" href="https://texttools.uniimize.in" target="_blank">
-      Open Tool →
-    </a>
-  </div>
-
-</div>
-
----
-
-<script>
-  function filterTools() {
-    const input = document.getElementById("toolSearch").value.toLowerCase();
-    const cards = document.querySelectorAll(".tool-card");
-
-    cards.forEach(card => {
-      const name = card.getAttribute("data-name");
-      card.style.display = name.includes(input) ? "block" : "none";
-    });
-  }
-</script>
-
----
-
-## 🔒 Core Principles
-
-- No unnecessary data collection  
-- Client-side processing wherever possible  
-- Minimal UI, maximum speed  
-- Built for scale, not gimmicks  
-
----
-
-## 📌 Roadmap
-
-- More PDF utilities  
-- Offline-first tools  
-- Unified dashboard  
-- API access for power users  
-
----
-
-## 🌐 Official Website
-**https://uniimize.in**
-
----
-
-<div align="center">
-  <sub>© UNIIMIZE — Build tools that respect time.</sub>
-</div>
+</html>
