@@ -309,9 +309,6 @@
     </div>
 
     <div class="container">
-        <nav>
-            <div class="logo">UNIIMIZE</div>
-        </nav>
 
         <section class="hero">
             <span class="badge">v2.0 Now Available</span>
