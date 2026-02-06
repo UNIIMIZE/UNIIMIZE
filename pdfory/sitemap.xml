@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/index.html</loc>
+    <loc>https://uniimize.in/pdfory/index.html</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>/privacy.html</loc>
+    <loc>https://uniimize.in/pdfory/privacy.html</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>/terms.html</loc>
+    <loc>https://uniimize.in/pdfory/terms.html</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>/tools/images-to-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/merge-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/pdf-to-images.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/split-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/add-image-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/compress-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/merge-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/images-to-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/split-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/pdf-to-images.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/compress-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/add-image-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/rotate-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/rotate-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/protect-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/watermark-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/unlock-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/unlock-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/pdf-to-word.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/protect-pdf.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/watermark-pdf.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/number-pages.html</loc>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>/tools/number-pages.html</loc>
+    <loc>https://uniimize.in/pdfory/tools/delete-pages.html</loc>
+    <priority>0.9</priority>
   </url>
 </urlset>
