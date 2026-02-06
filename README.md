@@ -1,10 +1,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>UNIIMIZE — Digital Tools, Reimagined</title>
+<title>UNIIMIZE — Digital Tools, Simplified</title>
 
 <meta name="description"
-content="Fast, private PDF and Image tools that run directly in your browser. No unnecessary uploads. Built for speed and simplicity." />
+content="Fast and privacy-aware PDF and Image tools that run directly in your browser. Built for clarity, speed, and modern workflows." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,13 +15,13 @@ href="https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/598623fc3bcd4259bc646f
 
 <style>
 :root {
-    --bg: #0b0d12;
-    --surface: #11151c;
-    --surface-2: #151a24;
-    --border: #1f2937;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --accent: #6366f1;
+    --bg: #ffffff;
+    --surface: #f8fafc;
+    --surface-2: #eef2f7;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #4f46e5;
     --accent-2: #ec4899;
     --radius: 20px;
     --ease: cubic-bezier(.2,.8,.2,1);
@@ -36,8 +36,8 @@ href="https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/598623fc3bcd4259bc646f
 body {
     font-family: Inter, system-ui, sans-serif;
     background:
-        radial-gradient(1200px 600px at 20% -10%, #1a1f35, transparent),
-        radial-gradient(800px 400px at 90% 10%, #301225, transparent),
+        radial-gradient(1000px 500px at 10% -10%, #eef2ff, transparent),
+        radial-gradient(800px 400px at 90% 0%, #fce7f3, transparent),
         var(--bg);
     color: var(--text);
     line-height: 1.6;
@@ -65,7 +65,7 @@ nav {
 
 .logo {
     font-weight: 900;
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     letter-spacing: -0.03em;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     -webkit-background-clip: text;
@@ -79,9 +79,9 @@ nav {
 }
 
 .hero h1 {
-    font-size: clamp(2.8rem, 7vw, 4.5rem);
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
     font-weight: 900;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.045em;
     margin-bottom: 24px;
 }
 
@@ -104,7 +104,7 @@ nav {
     padding: 18px 24px;
     border-radius: 999px;
     border: 1px solid var(--border);
-    background: var(--surface);
+    background: white;
     color: var(--text);
     font-size: 1rem;
     transition: border .3s var(--ease), box-shadow .3s var(--ease);
@@ -113,7 +113,7 @@ nav {
 .search input:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(99,102,241,.15);
+    box-shadow: 0 0 0 4px rgba(79,70,229,.15);
 }
 
 .results {
@@ -121,12 +121,13 @@ nav {
     top: calc(100% + 12px);
     left: 0;
     right: 0;
-    background: var(--surface);
+    background: white;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
     display: none;
     z-index: 20;
+    box-shadow: 0 20px 40px -12px rgba(0,0,0,.12);
 }
 
 .result {
@@ -139,7 +140,7 @@ nav {
 }
 
 .result:hover {
-    background: var(--surface-2);
+    background: var(--surface);
 }
 
 .tag {
@@ -149,8 +150,8 @@ nav {
     border-radius: 999px;
 }
 
-.tag.pdf { background: rgba(255,106,0,.15); color: #ff6a00; }
-.tag.img { background: rgba(14,165,233,.15); color: #0ea5e9; }
+.tag.pdf { background: #fff7ed; color: #c2410c; }
+.tag.img { background: #f0f9ff; color: #0284c7; }
 
 /* TOOL GRID */
 .grid {
@@ -161,10 +162,10 @@ nav {
 }
 
 .card {
-    background: linear-gradient(180deg, var(--surface), var(--surface-2));
+    background: linear-gradient(180deg, white, var(--surface));
     border: 1px solid var(--border);
     border-radius: 28px;
-    padding: 42px;
+    padding: 44px;
     display: flex;
     flex-direction: column;
     min-height: 260px;
@@ -173,7 +174,7 @@ nav {
 
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 60px -20px rgba(0,0,0,.8);
+    box-shadow: 0 30px 60px -20px rgba(15,23,42,.2);
 }
 
 .card h2 {
@@ -216,9 +217,10 @@ footer {
     text-align: center;
     color: var(--muted);
     font-size: .85rem;
+    background: var(--surface);
 }
 
-/* HARD GUARANTEE: NO TEXT DECORATION */
+/* HARD RULE: NO TEXT DECORATION */
 a:hover,
 h1:hover,
 h2:hover,
@@ -247,10 +249,10 @@ p:hover {
 </nav>
 
 <section class="hero">
-    <h1>Powerful Digital Tools.<br>No Unnecessary Complexity.</h1>
+    <h1>Clean Tools.<br>Real Productivity.</h1>
     <p>
-        Edit PDFs and images directly in your browser.
-        Designed for speed, privacy-aware workflows, and modern devices.
+        Edit PDFs and images directly in your browser with modern,
+        privacy-aware workflows designed for speed and clarity.
     </p>
 
     <div class="search">
@@ -262,29 +264,29 @@ p:hover {
 <section class="grid">
     <a class="card" href="./pdfory/index.html">
         <h2 style="color:#ff6a00">PDFORY</h2>
-        <p>Merge, split, compress, and secure PDFs using fast in-browser processing.</p>
+        <p>Merge, split, compress, and protect PDF documents with precision.</p>
         <span>Open PDF Toolkit →</span>
     </a>
 
     <a class="card" href="./editaroo/index.html">
         <h2 style="color:#0ea5e9">EDITAROO</h2>
-        <p>Resize, crop, convert, and enhance images with precision controls.</p>
+        <p>Resize, crop, convert, and enhance images without unnecessary steps.</p>
         <span>Open Image Toolkit →</span>
     </a>
 </section>
 
 <section class="features">
     <div class="feature">
-        <h3>Privacy-Focused</h3>
-        <p>Built to minimize unnecessary data transfer wherever possible.</p>
+        <h3>Privacy-Aware</h3>
+        <p>Designed to reduce unnecessary data transfer.</p>
     </div>
     <div class="feature">
         <h3>High Performance</h3>
-        <p>Optimized for modern browsers and efficient execution.</p>
+        <p>Optimized for modern browsers and devices.</p>
     </div>
     <div class="feature">
-        <h3>Simple by Design</h3>
-        <p>No clutter. No learning curve. Just tools that work.</p>
+        <h3>Simple by Default</h3>
+        <p>No clutter. No learning curve.</p>
     </div>
 </section>
 
