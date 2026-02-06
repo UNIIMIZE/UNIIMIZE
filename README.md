@@ -187,6 +187,7 @@
         .toolkit-card:hover {
             transform: translateY(-8px);
             border-color: transparent;
+            text-decoration: none;
         }
 
         .toolkit-card h2 {
@@ -220,6 +221,7 @@
 
         .card-pdfory:hover {
             box-shadow: 0 25px 50px -12px rgba(255, 106, 0, 0.15);
+            text-decoration: none;
         }
 
         .card-editaroo h2 {
@@ -232,6 +234,7 @@
 
         .card-editaroo:hover {
             box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.15);
+            text-decoration: none;
         }
 
 
