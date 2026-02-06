@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Split PDF — PDFORY</title>
+  <meta name="description" content="Extract selected pages from a PDF document." />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="../../pdfory/favicon.svg" />
+
+  <style>
+    :root {
+      --primary: #ff6a00;
+      --text: #1a1a1a;
+      --bg: #fdfcfb;
+      --surface: #ffffff;
+      --border: rgba(0, 0, 0, 0.1);
+      --radius: 20px;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px 0;
+    }
+
+    .tool-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      height: min(700px, 80vh);
+    }
+
+    @media (max-width: 900px) {
+      .tool-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    .work-area {
+      background: #f1f5f9;
+      border-radius: var(--radius);
+      border: 2px dashed #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: 0.3s;
+      padding: 20px;
+    }
+
+    .work-area.has-file {
+      border-style: solid;
+      border-color: transparent;
+      background: #fff;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02);
+      display: block;
+      overflow-y: auto;
+      cursor: default;
+    }
+
+    .work-area:hover:not(.has-file) {
+      border-color: var(--primary);
+      background: #fff8f5;
+    }
+
+    .upload-prompt {
+      text-align: center;
+      color: #64748b;
+    }
+
+    .controls {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h3 {
+      margin: 0;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+      margin-top: auto;
+    }
+
+    .grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .page-item {
+      position: relative;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .page-thumb {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      display: block;
+      background: white;
+      border: 2px solid transparent;
+    }
+
+    .page-item:hover .page-thumb {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-item.selected .page-thumb {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.2);
+    }
+
+    .page-item.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .page-number {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .range-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .range-input:focus {
+      outline: 2px solid var(--primary);
+      border-color: transparent;
+    }
+
+    /* Content Section */
+    .content-section {
+      padding: 60px 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .content-block {
+      margin-bottom: 40px;
+    }
+
+    .content-block h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+    }
+
+    .content-block p {
+      color: #64748b;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .steps-list {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+    }
+
+    .steps-list li {
+      position: relative;
+      padding-left: 50px;
+      margin-bottom: 20px;
+      color: #64748b;
+    }
+
+    .steps-list li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: -2px;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    details {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    summary {
+      font-weight: 600;
+      list-style: none;
+      position: relative;
+      padding-right: 24px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    details[open] summary::after {
+      content: '-';
+    }
+
+    details p {
+      margin: 12px 0 0;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <a href="../index.html" class="brand">PDFORY</a>
+      <a href="../index.html" style="font-weight:600; text-decoration:none;">All Tools</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="tool-layout">
+        <div class="work-area" id="drop-zone">
+          <div class="upload-prompt" id="prompt">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-bottom: 12px;">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            <h3>Click or Drop PDF</h3>
+            <p>Extract selected pages to a new file</p>
+          </div>
+          <div class="grid-view" id="grid"></div>
+          <input type="file" id="file-in" accept="application/pdf" hidden />
+        </div>
+
+        <aside class="controls">
+          <div>
+            <h3>Extract Pages</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-top:4px">Select pages visually or by range.</p>
+          </div>
+
+          <div>
+            <label style="font-weight:600; font-size:0.9rem; margin-bottom:6px; display:block;">Page Ranges</label>
+            <input type="text" id="range-input" class="range-input" placeholder="e.g. 1-3, 5, 8-10">
+            <p style="color:#94a3b8; font-size:0.8rem; margin-top:4px;" id="status-text">0 pages selected</p>
+          </div>
+
+          <div style="flex-grow:1"></div>
+
+          <button class="btn" id="download-btn" disabled>Export Selection</button>
+          <button class="btn ghost" id="reset-btn">Reset</button>
+          <button class="btn ghost" id="select-all-btn">Select All</button>
+        </aside>
+      </div>
+
+      <!-- Content Section -->
+      <div class="content-section">
+        <div class="content-block">
+          <h2>How to Split a PDF</h2>
+          <ul class="steps-list">
+            <li>Upload your PDF file.</li>
+            <li>Choose "Extract Pages" to select specific pages.</li>
+            <li>Or choose "Split by Range" to cut the document into parts.</li>
+            <li>Download your separated PDF files.</li>
+          </ul>
+        </div>
+
+        <div class="content-block">
+          <h2>Features</h2>
+          <p>
+            Break large documents into smaller, manageable files. Perfect for extracting specific chapters or separating
+            invoices.
+          </p>
+        </div>
+
+        <div class="content-block">
+          <h2>Frequently Asked Questions</h2>
+          <details>
+            <summary>Can I extract just one page?</summary>
+            <p>Yes, simply select the single page you want and click download.</p>
+          </details>
+          <details>
+            <summary>Are the other pages deleted?</summary>
+            <p>Your original file remains untouched. We only create new files from your selection.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PDF Libs -->
+  <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileIn = document.getElementById('file-in');
+    const grid = document.getElementById('grid');
+    const prompt = document.getElementById('prompt');
+    const downloadBtn = document.getElementById('download-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const selectAllBtn = document.getElementById('select-all-btn');
+    const rangeInput = document.getElementById('range-input');
+    const statusText = document.getElementById('status-text');
+
+    let pdfDoc = null;
+    let pdfBytes = null;
+    let selectedPages = new Set(); // Stores 1-based page indices
+
+    // Upload Handling
+    // Upload Handling
+    dropZone.addEventListener('click', (e) => {
+      // Allow clicking anywhere in the drop zone except on buttons/cards
+      if (!e.target.closest('.page-item') && !e.target.closest('.btn') && !e.target.closest('input')) {
+        fileIn.click();
+      }
+    });
+
+    fileIn.addEventListener('change', (e) => load(e.target.files[0]));
+    dropZone.addEventListener('dragover', (e) => e.preventDefault());
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      load(e.dataTransfer.files[0]);
+    });
+
+    async function load(file) {
+      if (!file || file.type !== 'application/pdf') return alert('PDF only');
+
+      pdfBytes = await file.arrayBuffer();
+      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+      pdfDoc = await loadingTask.promise;
+
+      prompt.style.display = 'none';
+      dropZone.classList.add('has-file');
+      dropZone.style.cursor = 'default';
+
+      renderThumbnails();
+      rangeInput.disabled = false;
+    }
+
+    async function renderThumbnails() {
+      grid.innerHTML = '';
+      for (let i = 1; i <= pdfDoc.numPages; i++) {
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale: 0.3 }); // Small thumbnail
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        canvas.className = 'page-thumb';
+
+        await page.render({ canvasContext: context, viewport }).promise;
+
+        const div = document.createElement('div');
+        div.className = 'page-item';
+        div.dataset.page = i;
+        div.innerHTML = `<div class="page-number">Page ${i}</div>`;
+        div.prepend(canvas);
+
+        div.addEventListener('click', () => togglePage(i));
+        grid.appendChild(div);
+      }
+    }
+
+    function togglePage(pageNum) {
+      if (selectedPages.has(pageNum)) {
+        selectedPages.delete(pageNum);
+      } else {
+        selectedPages.add(pageNum);
+      }
+      updateUI();
+    }
+
+    function updateUI() {
+      // Update Grid style
+      document.querySelectorAll('.page-item').forEach(el => {
+        const page = Number(el.dataset.page);
+        if (selectedPages.has(page)) el.classList.add('selected');
+        else el.classList.remove('selected');
+      });
+
+      // Update Input
+      const nums = Array.from(selectedPages).sort((a, b) => a - b);
+      // rangeInput.value = nums.join(', '); // Simple comma separated for now
+
+      // Update Status
+      statusText.textContent = `${nums.length} pages selected`;
+      downloadBtn.disabled = nums.length === 0;
+    }
+
+    // Range Input Logic
+    rangeInput.addEventListener('input', () => {
+      const val = rangeInput.value;
+      const parts = val.split(',');
+      const newSet = new Set();
+
+      parts.forEach(part => {
+        part = part.trim();
+        if (part.includes('-')) {
+          const [start, end] = part.split('-').map(Number);
+          if (!isNaN(start) && !isNaN(end)) {
+            for (let k = start; k <= end; k++) {
+              if (k >= 1 && k <= pdfDoc.numPages) newSet.add(k);
+            }
+          }
+        } else {
+          const n = Number(part);
+          if (!isNaN(n) && n >= 1 && n <= pdfDoc.numPages) newSet.add(n);
+        }
+      });
+
+      selectedPages = newSet;
+
+      // Update Grid but NOT input (avoid loop)
+      document.querySelectorAll('.page-item').forEach(el => {
+        const page = Number(el.dataset.page);
+        if (selectedPages.has(page)) el.classList.add('selected');
+        else el.classList.remove('selected');
+      });
+      statusText.textContent = `${selectedPages.size} pages selected`;
+      downloadBtn.disabled = selectedPages.size === 0;
+    });
+
+    downloadBtn.addEventListener('click', async () => {
+      downloadBtn.textContent = 'Processing...';
+      if (!pdfBytes) return;
+
+      const pdfDocSrc = await PDFLib.PDFDocument.load(pdfBytes);
+      const pdfDocNew = await PDFLib.PDFDocument.create();
+
+      const keptIndices = [];
+      for (let i = 1; i <= pdfDocSrc.getPageCount(); i++) {
+        if (selectedPages.has(i)) keptIndices.push(i - 1);
+      }
+
+      if (keptIndices.length === 0) return alert("Select at least one page!");
+
+      const copiedPages = await pdfDocNew.copyPages(pdfDocSrc, keptIndices);
+      copiedPages.forEach(page => pdfDocNew.addPage(page));
+
+      const newBytes = await pdfDocNew.save();
+      const blob = new Blob([newBytes], { type: 'application/pdf' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'split-output.pdf';
+      link.click();
+      downloadBtn.textContent = 'Export Selection';
+    });
+
+    resetBtn.addEventListener('click', () => location.reload());
+
+    selectAllBtn.addEventListener('click', () => {
+      for (let i = 1; i <= pdfDoc.numPages; i++) selectedPages.add(i);
+      updateUI();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compress PDF — PDFORY</title>
+  <meta name="description" content="Reduce PDF file size with adjustable quality settings." />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="../../pdfory/favicon.svg" />
+
+  <style>
+    :root {
+      --primary: #ff6a00;
+      --text: #1a1a1a;
+      --bg: #fdfcfb;
+      --surface: #ffffff;
+      --border: rgba(0, 0, 0, 0.1);
+      --radius: 20px;
+      --danger: #ef4444;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px 0;
+    }
+
+    .tool-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      height: min(700px, 80vh);
+    }
+
+    @media (max-width: 900px) {
+      .tool-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    .work-area {
+      background: #f1f5f9;
+      border-radius: var(--radius);
+      border: 2px dashed #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: 0.3s;
+      padding: 20px;
+    }
+
+    .work-area.has-file {
+      border-style: solid;
+      border-color: transparent;
+      background: #fff;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02);
+      display: flex;
+      cursor: default;
+    }
+
+    .work-area:hover:not(.has-file) {
+      border-color: var(--primary);
+      background: #fff8f5;
+    }
+
+    .upload-prompt {
+      text-align: center;
+      color: #64748b;
+    }
+
+    .controls {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h3 {
+      margin: 0;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+      margin-top: auto;
+    }
+
+    /* Tool Specific */
+    .preview-container {
+      max-width: 100%;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .preview-img {
+      max-height: 500px;
+      max-width: 100%;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      display: none;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-family: inherit;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <a href="../index.html" class="brand">PDFORY</a>
+      <a href="../index.html" style="font-weight:600; text-decoration:none;">All Tools</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="tool-layout">
+        <div class="work-area" id="drop-zone">
+          <div class="upload-prompt" id="prompt">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="margin-bottom: 12px;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <h3>Click or Drop PDF</h3>
+            <p>Compress PDF size securely</p>
+          </div>
+
+          <div class="preview-container" id="preview-con">
+            <img id="preview-img" class="preview-img" alt="Preview">
+            <span id="preview-status" style="display:none; color:#64748b; font-size:0.9rem">Generating preview...</span>
+          </div>
+
+          <input type="file" id="file-in" accept="application/pdf" hidden />
+        </div>
+
+        <!-- STYLES FOR CONTENT SECTION ADDED -->
+        <style>
+          /* Content Section */
+          .content-section {
+            padding: 60px 0;
+            max-width: 900px;
+            margin: 0 auto;
+          }
+
+          .content-block {
+            margin-bottom: 40px;
+          }
+
+          .content-block h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+          }
+
+          .content-block p {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 16px;
+          }
+
+          .steps-list {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+          }
+
+          .steps-list li {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+            color: #64748b;
+          }
+
+          .steps-list li::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+          }
+
+          details {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+          }
+
+          summary {
+            font-weight: 600;
+            list-style: none;
+            position: relative;
+            padding-right: 24px;
+          }
+
+          summary::-webkit-details-marker {
+            display: none;
+          }
+
+          summary::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+          }
+
+          details[open] summary::after {
+            content: '-';
+          }
+
+          details p {
+            margin: 12px 0 0;
+            font-size: 0.95rem;
+          }
+        </style>
+
+        <aside class="controls">
+          <div>
+            <h3>Compression</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-top:4px">Adjust quality to reduce size.</p>
+          </div>
+
+          <div>
+            <label style="font-weight:600; font-size:0.9rem;">Image Quality: <span id="quality-val">70</span>%</label>
+            <input type="range" id="quality" min="10" max="90" value="70">
+          </div>
+
+          <div>
+            <label style="font-weight:600; font-size:0.9rem;">Image Scale</label>
+            <select id="scale">
+              <option value="1">Standard (1x)</option>
+              <option value="1.3" selected>Balanced (1.3x)</option>
+              <option value="1.6">High (1.6x)</option>
+              <option value="0.8">Low (0.8x)</option>
+            </select>
+          </div>
+
+          <div style="background:#fff7ed; padding:12px; border-radius:12px; font-size:0.85rem; color:#c2410c;">
+            Note: This converts text to images. Text will no longer be selectable.
+          </div>
+
+          <div style="flex-grow:1"></div>
+
+          <button class="btn" id="compress-btn" disabled>Compress PDF</button>
+          <button class="btn ghost" id="reset-btn">Reset</button>
+        </aside>
+      </div>
+
+      <!-- Content Section -->
+      <div class="content-section">
+        <div class="content-block">
+          <h2>How to Compress a PDF</h2>
+          <ul class="steps-list">
+            <li>Upload your PDF document to the optimizer.</li>
+            <li>Adjust the "JPEG Quality" slider to balance size and clarity.</li>
+            <li>Use the "Scale" option to resize the document dimensions if needed.</li>
+            <li>Check the preview to ensure it looks good.</li>
+            <li>Click "Compress & Download".</li>
+          </ul>
+        </div>
+
+        <div class="content-block">
+          <h2>Why Compress PDFs?</h2>
+          <p>
+            Smaller files are easier to email, upload to websites, and store on your device.
+            Our tool optimizes images and structure without ruining text readability.
+          </p>
+        </div>
+
+        <div class="content-block">
+          <h2>Frequently Asked Questions</h2>
+          <details>
+            <summary>Will my text become blurry?</summary>
+            <p>Text usually remains sharp as it is vector-based. Only images are compressed/pixelated based on your
+              quality settings.</p>
+          </details>
+          <details>
+            <summary>How much can I reduce the file size?</summary>
+            <p>It depends on the content. Image-heavy PDFs can often be reduced by 50-80%.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PDF Libs -->
+  <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileIn = document.getElementById('file-in');
+    const prompt = document.getElementById('prompt');
+    const previewImg = document.getElementById('preview-img');
+    const previewStatus = document.getElementById('preview-status');
+    const compressBtn = document.getElementById('compress-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const qualityInput = document.getElementById('quality');
+    const qualityVal = document.getElementById('quality-val');
+    const scaleSelect = document.getElementById('scale');
+
+    let pdfDoc = null;
+    let pdfBytes = null;
+    let fileName = "";
+
+    // Upload
+    dropZone.addEventListener('click', (e) => {
+      // Allow clicking anywhere in the drop zone except on buttons/cards/inputs
+      if (!e.target.closest('.preview-container') && !e.target.closest('.btn') && !e.target.closest('input')) {
+        fileIn.click();
+      }
+    });
+
+    fileIn.addEventListener('change', (e) => load(e.target.files[0]));
+    dropZone.addEventListener('dragover', (e) => e.preventDefault());
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      load(e.dataTransfer.files[0]);
+    });
+
+    qualityInput.addEventListener('input', () => {
+      qualityVal.textContent = qualityInput.value;
+    });
+
+    qualityInput.addEventListener('change', updatePreview);
+    scaleSelect.addEventListener('change', updatePreview);
+
+    async function load(file) {
+      if (!file || file.type !== 'application/pdf') return alert('PDF only');
+
+      fileName = file.name;
+      pdfBytes = await file.arrayBuffer();
+      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+      pdfDoc = await loadingTask.promise;
+
+      prompt.style.display = 'none';
+      dropZone.classList.add('has-file');
+      dropZone.style.cursor = 'default';
+
+      compressBtn.disabled = false;
+      updatePreview();
+    }
+
+    async function updatePreview() {
+      if (!pdfDoc) return;
+
+      previewImg.style.display = 'none';
+      previewStatus.style.display = 'block';
+      previewStatus.textContent = 'Generating preview...';
+
+      const page = await pdfDoc.getPage(1);
+      const scale = Number(scaleSelect.value);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({ canvasContext: context, viewport }).promise;
+
+      const quality = Number(qualityInput.value) / 100;
+      const dataUrl = canvas.toDataURL('image/jpeg', quality);
+
+      previewImg.src = dataUrl;
+      previewImg.onload = () => {
+        previewImg.style.display = 'block';
+        previewStatus.style.display = 'none';
+      };
+    }
+
+    compressBtn.addEventListener('click', async () => {
+      compressBtn.textContent = 'Compressing (this may take time)...';
+      compressBtn.disabled = true;
+
+      try {
+        const output = await PDFLib.PDFDocument.create();
+        const scale = Number(scaleSelect.value);
+        const quality = Number(qualityInput.value) / 100;
+
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+          const page = await pdfDoc.getPage(i);
+          const viewport = page.getViewport({ scale });
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          await page.render({ canvasContext: context, viewport }).promise;
+          const jpgUrl = canvas.toDataURL('image/jpeg', quality);
+          const jpgBytes = await fetch(jpgUrl).then(res => res.arrayBuffer());
+
+          const img = await output.embedJpg(jpgBytes);
+          const pdfPage = output.addPage([img.width, img.height]);
+          pdfPage.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+        }
+
+        const outBytes = await output.save();
+        const blob = new Blob([outBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `compressed-${fileName}`;
+        link.click();
+      } catch (e) {
+        console.error(e);
+        alert('Error compressing PDF.');
+      }
+
+      compressBtn.textContent = 'Compress PDF';
+      compressBtn.disabled = false;
+    });
+
+    resetBtn.addEventListener('click', () => location.reload());
+  </script>
+</body>
+
+</html>
