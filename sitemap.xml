@@ -11,7 +11,14 @@
         <loc>https://uniimize.in/index.html</loc>
         <lastmod>2026-02-07</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
+        <priority>0.5</priority>
+    </url>
+
+        <url>
+        <loc>https://uniimize.in/privacy.html</loc>
+        <lastmod>2026-02-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
 
     <!-- PDFORY Toolkit -->
@@ -19,69 +26,75 @@
         <loc>https://uniimize.in/pdfory/index.html</loc>
         <lastmod>2026-02-07</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.5</priority>
+    </url>
+        <url>
+        <loc>https://uniimize.in/pdfory/</loc>
+        <lastmod>2026-02-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/privacy.html</loc>
         <lastmod>2026-02-07</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.4</priority>
+        <priority>0.5</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/terms.html</loc>
         <lastmod>2026-02-07</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.4</priority>
+        <priority>0.5</priority>
     </url>
 
     <!-- PDF Tools -->
     <url>
         <loc>https://uniimize.in/pdfory/tools/merge-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/split-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/compress-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/images-to-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/pdf-to-images.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/add-image-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/rotate-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/watermark-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/unlock-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/protect-pdf.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/number-pages.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/pdfory/tools/delete-pages.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
 
     <!-- EDITAROO Toolkit -->
@@ -89,48 +102,55 @@
         <loc>https://uniimize.in/editaroo/index.html</loc>
         <lastmod>2026-02-07</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <priority>05</priority>
+    </url>
+
+        <url>
+        <loc>https://uniimize.in/editaroo</loc>
+        <lastmod>2026-02-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1</priority>
     </url>
 
     <!-- Image Tools -->
     <url>
         <loc>https://uniimize.in/editaroo/tools/compress-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/convert-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/resize-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/crop-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/filter-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/rotate-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/flip-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/watermark-image.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/meme-generator.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://uniimize.in/editaroo/tools/color-picker.html</loc>
-        <priority>0.6</priority>
+        <priority>1.0</priority>
     </url>
 </urlset>
