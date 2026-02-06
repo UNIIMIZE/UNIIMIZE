@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Watermark Image — EDITAROO</title>
+    <meta name="description" content="Add text or image watermarks to your photos securely in your browser." />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../../editaroo/favicon.svg" />
+
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --text: #0f172a;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --radius: 20px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px 0;
+        }
+
+        .tool-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 30px;
+            height: min(700px, 80vh);
+        }
+
+        @media (max-width: 900px) {
+            .tool-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .canvas-area {
+            background: #f1f5f9;
+            border-radius: var(--radius);
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .canvas-area.active {
+            border-style: solid;
+            border-color: transparent;
+            background: repeating-linear-gradient(45deg, #e5e7eb 0 10px, #f3f4f6 0 20px);
+            cursor: default;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+
+        canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-prompt {
+            text-align: center;
+            color: #64748b;
+        }
+
+        .controls {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        h3 {
+            margin: 0;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 5px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .action-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            background: rgba(255, 255, 255, 0.5);
+            margin-top: auto;
+        }
+
+        /* Watermark Controls */
+        #text-controls,
+        #image-controls {
+            display: none;
+        }
+
+        #text-controls.visible,
+        #image-controls.visible {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <a href="../index.html" class="brand">EDITAROO</a>
+            <a href="../index.html" style="font-weight:600; text-decoration:none;">All Tools</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="tool-layout">
+                <div class="canvas-area" id="drop-zone">
+                    <div class="upload-prompt" id="prompt">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="margin-bottom: 12px; color:var(--primary);">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        <h3>Drop Image Here</h3>
+                        <p>JPG, PNG, WEBP supported</p>
+                    </div>
+
+                    <div class="canvas-wrapper" id="canvas-wrapper">
+                        <canvas id="canvas"></canvas>
+                    </div>
+
+                    <input type="file" id="file-in" accept="image/png, image/jpeg, image/webp" hidden />
+                    <input type="file" id="wm-image-in" accept="image/png, image/jpeg, image/webp" hidden />
+                </div>
+
+                <aside class="controls">
+                    <div>
+                        <h3>Watermark</h3>
+                        <p style="color:#64748b; font-size:0.9rem; margin-top:4px">Add text or logo overlays.</p>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="text">Text</button>
+                        <button class="tab-btn" data-tab="image">Image</button>
+                    </div>
+
+                    <!-- Text Controls -->
+                    <div id="text-controls" class="visible">
+                        <div class="input-group">
+                            <label>Text</label>
+                            <input type="text" id="wm-text" value="COPYRIGHT" placeholder="Your Text">
+                        </div>
+                        <div class="input-group">
+                            <label>Color</label>
+                            <input type="color" id="wm-color" value="#ffffff" style="height:40px; padding:2px;">
+                        </div>
+                        <div class="input-group">
+                            <label>Size</label>
+                            <input type="range" id="wm-size" min="10" max="200" value="48">
+                        </div>
+                        <div class="input-group">
+                            <label>Opacity</label>
+                            <input type="range" id="wm-opacity" min="0" max="1" step="0.1" value="0.8">
+                        </div>
+                        <div class="input-group">
+                            <label>Position</label>
+                            <select id="wm-position">
+                                <option value="center">Center</option>
+                                <option value="bottom-right" selected>Bottom Right</option>
+                                <option value="bottom-left">Bottom Left</option>
+                                <option value="top-right">Top Right</option>
+                                <option value="top-left">Top Left</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Image Controls -->
+                    <div id="image-controls">
+                        <button class="btn-outline" id="upload-wm-btn">Upload Logo/Image</button>
+                        <p id="wm-img-name" style="font-size:0.8rem; margin-top:5px; color:#64748b; display:none;"></p>
+
+                        <div class="input-group" style="margin-top:15px;">
+                            <label>Size (%)</label>
+                            <input type="range" id="wm-img-size" min="5" max="100" value="20">
+                        </div>
+                        <div class="input-group">
+                            <label>Opacity</label>
+                            <input type="range" id="wm-img-opacity" min="0" max="1" step="0.1" value="0.9">
+                        </div>
+                        <div class="input-group">
+                            <label>Position</label>
+                            <select id="wm-img-position">
+                                <option value="center">Center</option>
+                                <option value="bottom-right" selected>Bottom Right</option>
+                                <option value="bottom-left">Bottom Left</option>
+                                <option value="top-right">Top Right</option>
+                                <option value="top-left">Top Left</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="flex-grow:1"></div>
+
+                    <button class="action-btn" id="download-btn" disabled>Download Image</button>
+                    <button class="btn-outline" style="border:none; color:#64748b;" id="reset-btn">Reset</button>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div style="display:flex; justify-content:space-between; color:var(--text); font-size:0.9rem;">
+                <span>© 2026 EDITAROO</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileIn = document.getElementById('file-in');
+        const wmImageIn = document.getElementById('wm-image-in');
+        const prompt = document.getElementById('prompt');
+        const canvasWrapper = document.getElementById('canvas-wrapper');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const downloadBtn = document.getElementById('download-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        // Tabs
+        const tabs = document.querySelectorAll('.tab-btn');
+        const textControls = document.getElementById('text-controls');
+        const imageControls = document.getElementById('image-controls');
+        const uploadWmBtn = document.getElementById('upload-wm-btn');
+        const wmImgName = document.getElementById('wm-img-name');
+
+        // Inputs
+        const wmText = document.getElementById('wm-text');
+        const wmColor = document.getElementById('wm-color');
+        const wmSize = document.getElementById('wm-size');
+        const wmOpacity = document.getElementById('wm-opacity');
+        const wmPosition = document.getElementById('wm-position');
+
+        const wmImgSize = document.getElementById('wm-img-size');
+        const wmImgOpacity = document.getElementById('wm-img-opacity');
+        const wmImgPosition = document.getElementById('wm-img-position');
+
+        let baseImage = null;
+        let watermarkImage = null;
+        let activeTab = 'text';
+
+        // Tab Switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeTab = tab.dataset.tab;
+
+                if (activeTab === 'text') {
+                    textControls.classList.add('visible');
+                    imageControls.classList.remove('visible');
+                } else {
+                    textControls.classList.remove('visible');
+                    imageControls.classList.add('visible');
+                }
+                draw();
+            });
+        });
+
+        // Upload Handling
+        dropZone.addEventListener('click', (e) => {
+            if (!baseImage && !e.target.closest('.controls')) fileIn.click();
+        });
+
+        fileIn.addEventListener('change', (e) => loadBaseImage(e.target.files[0]));
+        dropZone.addEventListener('dragover', (e) => e.preventDefault());
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            loadBaseImage(e.dataTransfer.files[0]);
+        });
+
+        uploadWmBtn.addEventListener('click', () => wmImageIn.click());
+        wmImageIn.addEventListener('change', (e) => loadWatermarkImage(e.target.files[0]));
+
+        function loadBaseImage(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    baseImage = img;
+                    prompt.style.display = 'none';
+                    canvasWrapper.style.display = 'block';
+                    dropZone.classList.add('active');
+                    downloadBtn.disabled = false;
+                    draw();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadWatermarkImage(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    watermarkImage = img;
+                    wmImgName.textContent = file.name;
+                    wmImgName.style.display = 'block';
+                    uploadWmBtn.textContent = 'Change Image';
+                    draw();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function draw() {
+            if (!baseImage) return;
+
+            // Resize canvas to match image, but keep it responsive via CSS
+            canvas.width = baseImage.width;
+            canvas.height = baseImage.height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(baseImage, 0, 0);
+
+            if (activeTab === 'text' && wmText.value) {
+                drawTextWatermark();
+            } else if (activeTab === 'image' && watermarkImage) {
+                drawImageWatermark();
+            }
+        }
+
+        function getPosition(width, height, objectWidth, objectHeight, type) {
+            const padding = Math.max(width, height) * 0.05; // 5% padding
+            let x, y;
+
+            const posValue = type === 'text' ? wmPosition.value : wmImgPosition.value;
+
+            switch (posValue) {
+                case 'top-left':
+                    x = padding;
+                    y = padding + (type === 'text' ? objectHeight * 0.8 : 0); // Text baseline adjustment
+                    break;
+                case 'top-right':
+                    x = width - objectWidth - padding;
+                    y = padding + (type === 'text' ? objectHeight * 0.8 : 0);
+                    break;
+                case 'bottom-left':
+                    x = padding;
+                    y = height - padding - (type === 'image' ? objectHeight : 0);
+                    break;
+                case 'bottom-right':
+                    x = width - objectWidth - padding;
+                    y = height - padding - (type === 'image' ? objectHeight : 0);
+                    break;
+                case 'center':
+                    x = (width - objectWidth) / 2;
+                    y = (height - (type === 'image' ? objectHeight : 0)) / 2 + (type === 'text' ? objectHeight * 0.3 : 0);
+                    break;
+            }
+            return { x, y };
+        }
+
+        function drawTextWatermark() {
+            const text = wmText.value;
+            const fontSize = Math.max(10, (parseInt(wmSize.value) / 100) * (baseImage.width / 10)); // Responsive scale
+
+            ctx.font = `bold ${fontSize}px sans-serif`;
+            ctx.globalAlpha = parseFloat(wmOpacity.value);
+            ctx.fillStyle = wmColor.value;
+
+            const metrics = ctx.measureText(text);
+            const textWidth = metrics.width;
+            const textHeight = fontSize; // Approx
+
+            const pos = getPosition(canvas.width, canvas.height, textWidth, textHeight, 'text');
+            ctx.fillText(text, pos.x, pos.y);
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawImageWatermark() {
+            const scale = parseInt(wmImgSize.value) / 100;
+
+            // Calculate aspect ratio correct dimensions
+            let targetW = baseImage.width * scale;
+            let targetH = (watermarkImage.height / watermarkImage.width) * targetW;
+
+            // Check if larger than canvas
+            if (targetH > baseImage.height * scale) {
+                targetH = baseImage.height * scale;
+                targetW = (watermarkImage.width / watermarkImage.height) * targetH;
+            }
+
+            ctx.globalAlpha = parseFloat(wmImgOpacity.value);
+
+            const pos = getPosition(canvas.width, canvas.height, targetW, targetH, 'image');
+            ctx.drawImage(watermarkImage, pos.x, pos.y, targetW, targetH);
+            ctx.globalAlpha = 1.0;
+        }
+
+        // Event Listeners for Live Update
+        [wmText, wmColor, wmSize, wmOpacity, wmPosition].forEach(el => el.addEventListener('input', draw));
+        [wmImgSize, wmImgOpacity, wmImgPosition].forEach(el => el.addEventListener('input', draw));
+
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'watermarked-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+
+        resetBtn.addEventListener('click', () => location.reload());
+
+    </script>
+</body>
+
+</html>

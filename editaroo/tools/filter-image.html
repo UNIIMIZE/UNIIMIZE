@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Filter Image — EDITAROO</title>
+    <meta name="description" content="Apply beautiful filters to your images instantly online." />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../../editaroo/favicon.svg" />
+
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --text: #0f172a;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --radius: 20px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px 0;
+        }
+
+        .tool-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 30px;
+            height: min(700px, 80vh);
+        }
+
+        @media (max-width: 900px) {
+            .tool-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        .canvas-area {
+            background: #f1f5f9;
+            border-radius: var(--radius);
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .canvas-area:hover {
+            border-color: var(--primary);
+            background: #e0f2fe;
+        }
+
+        .canvas-area.active {
+            border-style: solid;
+            border-color: transparent;
+            background: #1e293b;
+            /* Dark bg for contrast */
+            cursor: default;
+        }
+
+        .upload-prompt {
+            text-align: center;
+            color: #64748b;
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .controls {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        h3 {
+            margin: 0;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .filter-btn.active {
+            background: #e0f2fe;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .slider-group {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .slider-group.visible {
+            display: block;
+        }
+
+        .slider-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: auto;
+        }
+
+        .action-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            background: transparent;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="brand">EDITAROO</a>
+            <a href="../index.html" style="font-weight: 600; text-decoration: none;">All Tools</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="tool-layout">
+                <div class="canvas-area" id="drop-zone">
+                    <div class="upload-prompt" id="prompt">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="margin-bottom: 12px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        <h3>Click or Drop Image</h3>
+                        <p>JPG, PNG supported</p>
+                    </div>
+                    <canvas id="canvas"></canvas>
+                    <input type="file" id="file-in" accept="image/*" hidden />
+                </div>
+
+                <aside class="controls">
+                    <h3>Filters</h3>
+                    <div class="filter-grid" id="filters">
+                        <button class="filter-btn active" data-filter="none">Normal</button>
+                        <button class="filter-btn" data-filter="grayscale(100%)">Grayscale</button>
+                        <button class="filter-btn" data-filter="sepia(100%)">Sepia</button>
+                        <button class="filter-btn" data-filter="contrast(150%)">High Contrast</button>
+                        <button class="filter-btn" data-filter="brightness(120%)">Bright</button>
+                        <button class="filter-btn" data-filter="invert(100%)">Invert</button>
+                        <button class="filter-btn" data-filter="blur(5px)">Blur</button>
+                        <button class="filter-btn" data-filter="hue-rotate(90deg)">Hue Shift</button>
+                    </div>
+
+                    <div style="flex-grow: 1;"></div>
+
+                    <button class="action-btn" id="download-btn" disabled>Download Image</button>
+                    <button class="action-btn reset-btn" id="reset-btn">Reset</button>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileIn = document.getElementById('file-in');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const prompt = document.getElementById('prompt');
+        const downloadBtn = document.getElementById('download-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        let img = new Image();
+        let currentFilter = 'none';
+
+        // Upload Handling
+        dropZone.addEventListener('click', () => !img.src && fileIn.click());
+        fileIn.addEventListener('change', (e) => load(e.target.files[0]));
+
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            load(e.dataTransfer.files[0]);
+        });
+
+        function load(file) {
+            if (!file || !file.type.startsWith('image/')) return;
+            const url = URL.createObjectURL(file);
+            img.src = url;
+            img.onload = () => {
+                render();
+                dropZone.classList.add('active');
+                prompt.style.display = 'none';
+                downloadBtn.disabled = false;
+            };
+        }
+
+        function render() {
+            // Resize canvas to fit container but keep aspect ratio
+            // For simplicity in this demo, we set canvas match image
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            ctx.filter = currentFilter;
+            ctx.drawImage(img, 0, 0);
+        }
+
+        // Filter Logic
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                if (img.src) render();
+            });
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'filtered-editaroo.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if (img.src) {
+                currentFilter = 'none';
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                filterBtns[0].classList.add('active');
+                render();
+            }
+        });
+    </script>
+</body>
+
+</html>
