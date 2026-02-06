@@ -1,7 +1,6 @@
-<!-- =========================
- UNIIMIZE — Tool Hub README
- Hosted on GitHub
-========================= -->
+<!doctype html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -153,6 +152,7 @@
             letter-spacing: -0.04em;
             margin-bottom: 24px;
             background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -167,9 +167,9 @@
         /* Toolkits Grid */
         .toolkit-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 32px;
-            margin-bottom: 120px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 80px;
         }
 
         .toolkit-card {
@@ -299,6 +299,96 @@
                 min-height: 250px;
             }
         }
+
+        /* Search Styles */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            text-align: left;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            padding-left: 54px;
+            font-size: 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: white;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            font-family: inherit;
+            color: var(--text);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 12px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: none;
+            z-index: 100;
+        }
+
+        .result-item {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-bottom: 1px solid var(--surface);
+            color: var(--text);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item:hover {
+            background: var(--surface);
+        }
+
+        .result-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-left: auto;
+        }
+
+        .tag-pdf {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .tag-img {
+            background: #f0f9ff;
+            color: #0284c7;
+        }
     </style>
 </head>
 
@@ -309,12 +399,26 @@
     </div>
 
     <div class="container">
+        <nav>
+            <div class="logo">UNIIMIZE</div>
+        </nav>
 
         <section class="hero">
             <span class="badge">v2.0 Now Available</span>
             <h1>The Ultimate<br>Digital Toolkit.</h1>
             <p class="lead">A suite of powerful tools for your documents and images. <br>Processing happens entirely on
                 your device.</p>
+
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" id="search-input"
+                    placeholder="Search for tools (e.g. 'merge', 'crop')...">
+                <div class="search-results" id="search-results"></div>
+            </div>
         </section>
 
         <div class="toolkit-grid">
@@ -387,6 +491,76 @@
             <p>&copy; 2026 UNIIMIZE Inc. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        const tools = [
+            // PDF Tools
+            { name: "Merge PDF", tags: "combine join pdf", url: "./pdfory/tools/merge-pdf.html", type: "pdf" },
+            { name: "Split PDF", tags: "separate cut extract pdf", url: "./pdfory/tools/split-pdf.html", type: "pdf" },
+            { name: "Compress PDF", tags: "shrink reduce size optimize pdf", url: "./pdfory/tools/compress-pdf.html", type: "pdf" },
+            { name: "Images to PDF", tags: "convert jpg png to pdf", url: "./pdfory/tools/images-to-pdf.html", type: "pdf" },
+            { name: "PDF to Images", tags: "convert pdf to jpg png", url: "./pdfory/tools/pdf-to-images.html", type: "pdf" },
+            { name: "Add Image to PDF", tags: "insert photo stamp pdf", url: "./pdfory/tools/add-image-pdf.html", type: "pdf" },
+            { name: "Rotate PDF", tags: "turn orientation fix pdf", url: "./pdfory/tools/rotate-pdf.html", type: "pdf" },
+            { name: "Watermark PDF", tags: "stamp protect logo pdf", url: "./pdfory/tools/watermark-pdf.html", type: "pdf" },
+            { name: "Unlock PDF", tags: "decrypt remove password pdf", url: "./pdfory/tools/unlock-pdf.html", type: "pdf" },
+            { name: "Protect PDF", tags: "encrypt lock password pdf", url: "./pdfory/tools/protect-pdf.html", type: "pdf" },
+            { name: "Number Pages", tags: "pagination count pdf", url: "./pdfory/tools/number-pages.html", type: "pdf" },
+            { name: "Delete Pages", tags: "remove cut pdf", url: "./pdfory/tools/delete-pages.html", type: "pdf" },
+
+            // Image Tools
+            { name: "Compress Image", tags: "shrink reduce size optimize jpg png", url: "./editaroo/tools/compress-image.html", type: "img" },
+            { name: "Convert Image", tags: "format change jpg png webp", url: "./editaroo/tools/convert-image.html", type: "img" },
+            { name: "Resize Image", tags: "scale dimensions width height", url: "./editaroo/tools/resize-image.html", type: "img" },
+            { name: "Crop Image", tags: "cut trim selection", url: "./editaroo/tools/crop-image.html", type: "img" },
+            { name: "Filter Image", tags: "effects instagram grayscale", url: "./editaroo/tools/filter-image.html", type: "img" },
+            { name: "Rotate Image", tags: "turn orientation", url: "./editaroo/tools/rotate-image.html", type: "img" },
+            { name: "Flip Image", tags: "mirror reflect", url: "./editaroo/tools/flip-image.html", type: "img" },
+            { name: "Watermark Image", tags: "stamp protect logo", url: "./editaroo/tools/watermark-image.html", type: "img" },
+            { name: "Meme Generator", tags: "funny caption text", url: "./editaroo/tools/meme-generator.html", type: "img" },
+            { name: "Color Picker", tags: "eyedropper hex rgb palette", url: "./editaroo/tools/color-picker.html", type: "img" }
+        ];
+
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = tools.filter(tool =>
+                tool.name.toLowerCase().includes(query) ||
+                tool.tags.includes(query)
+            );
+
+            if (results.length > 0) {
+                searchResults.innerHTML = results.slice(0, 5).map(tool => `
+                    <div class="result-item" onclick="window.location.href='${tool.url}'">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            ${tool.type === 'pdf'
+                        ? '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>'
+                        : '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline>'}
+                        </svg>
+                        ${tool.name}
+                        <span class="result-tag tag-${tool.type}">${tool.type.toUpperCase()}</span>
+                    </div>
+                `).join('');
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>
