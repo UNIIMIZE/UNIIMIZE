@@ -10,8 +10,8 @@ content="UNIIMIZE is a multi-domain platform offering practical online tools acr
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-<link rel="icon" type="image/svg+xml"
-href="https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/598623fc3bcd4259bc646f7b3f845e915c860538/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="[https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/b8143ac493234f63447479944fb2f21fd444a22b/pdfory/favicon.svg](https://raw.githubusercontent.com/UNIIMIZE/UNIIMIZE/d0d834dc9c0e2855a130404a46d62846a4981f4c/favicon.svg)" />
+
 
 <style>
 :root{
@@ -208,10 +208,6 @@ p:hover{
 
 <body>
 <div class="container">
-
-<nav>
-  <div class="logo">UNIIMIZE</div>
-</nav>
 
 <section class="hero">
   <h1>A Platform of Useful Tools.</h1>
