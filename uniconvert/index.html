@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNICONVERT — Free Online File Converter</title>
+    <meta name="description"
+        content="Convert images, audio, and video files locally in your browser. 100% private and free." />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+    <style>
+        :root {
+            --primary: #f59e0b;
+            /* Amber 500 */
+            --primary-dark: #d97706;
+            --primary-soft: #fffbeb;
+            /* Amber 50 */
+            --text: #1a1a1a;
+            --text-soft: #666;
+            --bg: #fdfcfb;
+            --surface: rgba(255, 255, 255, 0.8);
+            --border: rgba(245, 158, 11, 0.1);
+            --shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.08);
+            --radius: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Syne', sans-serif;
+            line-height: 1.1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.2s;
+        }
+
+        /* Background Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: #fef3c7;
+            /* Amber 100 */
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #fffbeb;
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 50px) scale(1.1);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+        }
+
+        .nav-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .switch-btn {
+            background: #fffbeb;
+            color: var(--primary-dark);
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .switch-btn:hover {
+            background: #fef3c7;
+            transform: translateY(-1px);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #1a1a1a 50%, #f59e0b 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            color: var(--text-soft);
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Tools Grid */
+        .tools-section {
+            padding: 0 0 120px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);
+        }
+
+        .tool-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .tool-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+        }
+
+        .tool-card p {
+            margin: 0 0 20px 0;
+            color: var(--text-soft);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .card-link {
+            margin-top: auto;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header>
+        <div class="container nav-wrap">
+            <a href="#" class="brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)">
+                    <path d="M7 17l9.2-9.2M17 17V7H7" />
+                </svg>
+                UNICONVERT
+            </a>
+            <a href="../index.html" class="switch-btn">
+                TOOLKITS
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7" />
+                    <path d="M7 7h10v10" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="badge">Universal Converter</span>
+            <h1>Convert anything.<br>Anywhere, securely.</h1>
+            <p class="lead">Transform images, videos, and documents instantly in your browser. No limits, no uploads,
+                100% free.</p>
+            <a href="#tools" class="btn btn-primary">Start Converting</a>
+        </div>
+    </section>
+
+    <section class="tools-section" id="tools">
+        <div class="container">
+            <div class="section-header">
+                <h3>Conversion Tools</h3>
+                <p style="color:var(--text-soft)">Select a tool to get started.</p>
+            </div>
+
+            <div class="tool-grid">
+                <a href="tools/image-converter.html" class="tool-card">
+                    <h3>Image Converter</h3>
+                    <p>Convert PNG, JPG, WEBP, BMP, and ICO files instantly.</p>
+                    <span class="card-link">Use Tool →</span>
+                </a>
+
+                <a href="tools/video-converter.html" class="tool-card">
+                    <h3>Video Converter</h3>
+                    <p>Convert MP4, MOV, AVI, MKV, and GIF files locally.</p>
+                    <span class="card-link">Use Tool →</span>
+                </a>
+
+                <div class="tool-card" style="opacity: 0.6; cursor: default;">
+                    <h3>Audio Converter <span
+                            style="font-size:0.7rem; background:#eee; padding:2px 6px; border-radius:4px; margin-left:6px; vertical-align:middle;">SOON</span>
+                    </h3>
+                    <p>Extract audio and convert MP3, WAV, AAC.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <span>© 2026 UNICONVERT. Part of UNIIMIZE.</span>
+        </div>
+    </footer>
+</body>
+
+</html>
