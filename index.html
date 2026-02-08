@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNIIMIZE — The Ultimate Digital Toolkit</title>
+    <meta name="description"
+        content="Free, private, and local-first digital tools. Edit PDFs and Images securely in your browser with Uniimize." />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Using Inter as a proxy for San Francisco -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+    <style>
+        :root {
+            --bg: #f5f5f7;
+            /* Apple Light Gray */
+            --glass-material: rgba(255, 255, 255, 0.45);
+            /* More transparent */
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-primary: #1d1d1f;
+            /* Apple Black */
+            --text-secondary: #86868b;
+            /* Apple Gray */
+            --accent: #0071e3;
+            /* Apple Blue */
+            --shadow-sm: 0 4px 24px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        h1,
+        h2,
+        h3 {
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Mesh Gradient Background */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #fbfbfd;
+            overflow: hidden;
+        }
+
+        /* Milky Overlay for "Liquid" Background Feel */
+        .mesh-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            /* Significantly whiter */
+            backdrop-filter: blur(100px);
+            /* Smoother blur */
+            z-index: 1;
+        }
+
+        /* Noise Texture */
+        .mesh-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 1;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .mesh-blob {
+            position: absolute;
+            filter: blur(60px);
+            opacity: 1;
+            /* High opacity, but hidden behind the white overlay */
+            animation: float 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        /* Vibrant Colors (will be washed out by overlay) */
+        .blob-1 {
+            background: #3b82f6;
+            /* Blue 500 */
+            width: 900px;
+            height: 900px;
+            top: -200px;
+            left: -200px;
+        }
+
+        .blob-2 {
+            background: #a855f7;
+            /* Purple 500 */
+            width: 800px;
+            height: 800px;
+            bottom: -200px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            background: #14b8a6;
+            /* Teal 500 */
+            width: 600px;
+            height: 600px;
+            top: 40%;
+            left: 30%;
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 30px) scale(1.05);
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 0;
+            /* Slightly more padding */
+            margin-bottom: 40px;
+            /* Completely transparent */
+            background: transparent;
+            backdrop-filter: none;
+            border: none;
+        }
+
+        .logo {
+            display: flex;
+            /* Restore logo */
+        }
+
+        /* Hide logo */
+        nav a {
+            display: none;
+        }
+
+        /* Hide nav links */
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #1d1d1f, #4a4a4f);
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 100px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #0071e3 0%, #9f5afd 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            font-size: 1.35rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.5;
+        }
+
+        /* Search */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            padding: 18px 24px 18px 54px;
+            border-radius: 20px;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            /* More definition */
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 12px 40px rgba(0, 113, 227, 0.15);
+            border-color: rgba(0, 113, 227, 0.4);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 16px);
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            display: none;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .result-item {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--text-primary);
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item:hover {
+            background: rgba(0, 113, 227, 0.1);
+            color: var(--accent);
+        }
+
+        .result-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-left: auto;
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-secondary);
+        }
+
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            margin-bottom: 120px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            /* Liquid transparency */
+            backdrop-filter: blur(40px) saturate(200%);
+            /* High saturation for "liquid" look */
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            /* Highlight top edge */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 40px;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow:
+                0 4px 30px rgba(0, 0, 0, 0.05),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            /* Inner light ring */
+            min-height: 480px;
+            /* Taller for more content */
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            background: rgba(255, 255, 255, 0.55);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-card h2 {
+            font-size: 2.25rem;
+            /* Larger */
+            font-weight: 700;
+            margin-bottom: 12px;
+            z-index: 2;
+        }
+
+        .glass-card p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            flex-grow: 1;
+            z-index: 2;
+            max-width: 320px;
+            line-height: 1.6;
+        }
+
+        .card-link {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            background: var(--text-primary);
+            padding: 14px 28px;
+            border-radius: 100px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+            width: fit-content;
+            transition: all 0.3s;
+        }
+
+        .card-link svg {
+            transition: transform 0.3s;
+        }
+
+        .glass-card:hover .card-link {
+            background: #000;
+            transform: scale(1.05);
+        }
+
+        .glass-card:hover .card-link svg {
+            transform: translateX(4px);
+        }
+
+        .card-art {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 200px;
+            height: 200px;
+            opacity: 0.3;
+            transform: rotate(-10deg);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+            color: var(--accent);
+            /* Use accent color for SVG */
+        }
+
+        .card-art svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .glass-card:hover .card-art {
+            opacity: 0.25;
+            transform: rotate(0) scale(1.1) translate(-10px, -10px);
+        }
+
+        /* Removed .art-pdf and .art-img background gradients */
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            /* Changed to 2 columns since one removed */
+            gap: 40px;
+            padding-top: 60px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 80px;
+        }
+
+        .feature h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-icon {
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        /* -- NEW SECTIONS -- */
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            margin-bottom: 140px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .step-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--text-primary);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .step-item p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Connecting line for steps (desktop only) */
+        @media (min-width: 769px) {
+            .step-item:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                top: 25px;
+                right: -50%;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 50%, transparent 50%);
+                background-size: 10px 1px;
+                z-index: -1;
+            }
+        }
+
+        /* Why Uniimize */
+        .why-section {
+            margin-bottom: 140px;
+            padding: 80px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .why-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+        }
+
+        .why-content p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .benefit-list {
+            list-style: none;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: #e5f9e0;
+            /* light green */
+            color: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* FAQ */
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto 120px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .faq-question {
+            padding: 24px 32px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-arrow {
+            transition: transform 0.3s;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 32px;
+        }
+
+        .faq-answer p {
+            padding-bottom: 24px;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            /* approximate max height */
+        }
+
+        .faq-item.active .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        footer a {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .why-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .step-item:not(:last-child)::after {
+                display: none;
+            }
+
+            .glass-card {
+                padding: 32px;
+            }
+
+            .glass-card h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mesh-bg">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                UNIIMIZE
+            </div>
+            <!-- Privacy link hidden as per CSS -->
+            <a href="privacy.html" style="display: none;">Privacy</a>
+        </nav>
+
+        <section class="hero">
+            <span class="badge">Version 2.0</span>
+            <h1>Powerful tools.<br><span>Zero data transfer.</span></h1>
+            <p class="lead">Edit PDFs and Images directly in your browser. <br>Secure by design, beautiful by nature.
+            </p>
+
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" id="search-input"
+                    placeholder="Search tools (e.g. 'merge', 'crop')...">
+                <div class="search-results" id="search-results"></div>
+            </div>
+        </section>
+
+        <div class="bento-grid">
+            <a href="./pdfory/index.html" class="glass-card">
+                <h2>PDF Toolkit</h2>
+                <p>Merge, split, and secure PDFs with professional precision. No uploads required.</p>
+                <div class="card-link">
+                    PDF Tools
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+                <!-- PDF Icon Illustration -->
+                <div class="card-art">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="./editaroo/index.html" class="glass-card">
+                <h2>Image Studio</h2>
+                <p>Resize, filter, and optimize visuals instantly. High-performance local processing.</p>
+                <div class="card-link">
+                    Image Tools
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+                <!-- Image Icon Illustration -->
+                <div class="card-art">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </div>
+                <h3>Private & Secure</h3>
+                <p>Files never leave your device. All processing happens locally in your browser memory.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </div>
+                <h3>Instant Speed</h3>
+                <p>Blazing fast performance using WebAssembly technology. No upload or download wait times.</p>
+            </div>
+
+        </div>
+
+        <!-- NEW: How It Works -->
+        <section class="how-it-works">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Simple by design. Secure by default.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <h3>Select Tool</h3>
+                    <p>Choose from our comprehensive suite of PDF and Image manipulation tools.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <h3>Process Locally</h3>
+                    <p>Our WebAssembly engine processes your files instantly on your device.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <h3>Save Instantly</h3>
+                    <p>Download your edited files immediately. No servers, no waiting.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW: Why Uniimize -->
+        <section class="why-section">
+            <div class="why-content">
+                <h2>Why Uniimize?</h2>
+                <p>Most online tools upload your sensitive documents to a cloud server. We don't. We built Uniimize to
+                    bring the power of cloud tools to the privacy of your browser.</p>
+
+                <ul class="benefit-list">
+                    <li class="benefit-item">
+                        <div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></div>
+                        100% Client-Side Processing
+                    </li>
+                    <li class="benefit-item">
+                        <div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></div>
+                        No File Size Limits
+                    </li>
+
+                    <li class="benefit-item">
+                        <div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></div>
+                        Open & Transparent
+                    </li>
+                </ul>
+            </div>
+            <!-- Visual Placeholder / Illustration -->
+            <div class="why-visual"
+                style="background: rgba(255,255,255,0.4); border-radius: 32px; height: 300px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                <div
+                    style="position: absolute; top:0; left:0; width:100%; height:100%; filter: blur(40px); opacity: 0.5; background: linear-gradient(135deg, #c084fc 0%, #60a5fa 100%);">
+                </div>
+                <div style="z-index: 2; text-align: center;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <div style="font-weight: 700; margin-top: 16px; font-size: 1.2rem;">End-to-End Local</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW: FAQ -->
+        <section class="faq-section">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is my data really private?
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely. Uniimize runs entirely in your web browser. Your files are never uploaded to any
+                        server, meaning we couldn't see them even if we wanted to.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is there a file size limit?
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>Since files are processed on your device, the only limit is your computer's memory (RAM). Most
+                        modern devices can handle very large files effortlessly.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Does it work on mobile?
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! Uniimize is fully responsive and optimized for mobile devices, tablets, and desktops.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>
+                &copy; 2026 UNIIMIZE Inc. Designed in California.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const tools = [
+            // PDF Tools
+            { name: "Merge PDF", tags: "combine join pdf", url: "./pdfory/tools/merge-pdf.html", type: "pdf" },
+            { name: "Split PDF", tags: "separate cut extract pdf", url: "./pdfory/tools/split-pdf.html", type: "pdf" },
+            { name: "Compress PDF", tags: "shrink reduce size optimize pdf", url: "./pdfory/tools/compress-pdf.html", type: "pdf" },
+            { name: "Images to PDF", tags: "convert jpg png to pdf", url: "./pdfory/tools/images-to-pdf.html", type: "pdf" },
+            { name: "PDF to Images", tags: "convert pdf to jpg png", url: "./pdfory/tools/pdf-to-images.html", type: "pdf" },
+            { name: "Add Image to PDF", tags: "insert photo stamp pdf", url: "./pdfory/tools/add-image-pdf.html", type: "pdf" },
+            { name: "Rotate PDF", tags: "turn orientation fix pdf", url: "./pdfory/tools/rotate-pdf.html", type: "pdf" },
+            { name: "Watermark PDF", tags: "stamp protect logo pdf", url: "./pdfory/tools/watermark-pdf.html", type: "pdf" },
+            { name: "Unlock PDF", tags: "decrypt remove password pdf", url: "./pdfory/tools/unlock-pdf.html", type: "pdf" },
+            { name: "Protect PDF", tags: "encrypt lock password pdf", url: "./pdfory/tools/protect-pdf.html", type: "pdf" },
+            { name: "Number Pages", tags: "pagination count pdf", url: "./pdfory/tools/number-pages.html", type: "pdf" },
+            { name: "Delete Pages", tags: "remove cut pdf", url: "./pdfory/tools/delete-pages.html", type: "pdf" },
+
+            // Image Tools
+            { name: "Compress Image", tags: "shrink reduce size optimize jpg png", url: "./editaroo/tools/compress-image.html", type: "img" },
+            { name: "Convert Image", tags: "format change jpg png webp", url: "./editaroo/tools/convert-image.html", type: "img" },
+            { name: "Resize Image", tags: "scale dimensions width height", url: "./editaroo/tools/resize-image.html", type: "img" },
+            { name: "Crop Image", tags: "cut trim selection", url: "./editaroo/tools/crop-image.html", type: "img" },
+            { name: "Filter Image", tags: "effects instagram grayscale", url: "./editaroo/tools/filter-image.html", type: "img" },
+            { name: "Rotate Image", tags: "turn orientation", url: "./editaroo/tools/rotate-image.html", type: "img" },
+            { name: "Flip Image", tags: "mirror reflect", url: "./editaroo/tools/flip-image.html", type: "img" },
+            { name: "Watermark Image", tags: "stamp protect logo", url: "./editaroo/tools/watermark-image.html", type: "img" },
+            { name: "Meme Generator", tags: "funny caption text", url: "./editaroo/tools/meme-generator.html", type: "img" },
+            { name: "Color Picker", tags: "eyedropper hex rgb palette", url: "./editaroo/tools/color-picker.html", type: "img" }
+        ];
+
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = tools.filter(tool =>
+                tool.name.toLowerCase().includes(query) ||
+                tool.tags.includes(query)
+            );
+
+            if (results.length > 0) {
+                searchResults.innerHTML = results.slice(0, 5).map(tool => `
+                    <div class="result-item" onclick="window.location.href='${tool.url}'">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            ${tool.type === 'pdf'
+                        ? '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>'
+                        : '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline>'}
+                        </svg>
+                        ${tool.name}
+                        <span class="result-tag tag-${tool.type}">${tool.type.toUpperCase()}</span>
+                    </div>
+                `).join('');
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // 404 Route Guard
+        // Intercepts internal links to redirect to 404.html if broken
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return;
+
+            // Only handle internal navigation
+            if (link.hostname !== window.location.hostname) return;
+
+            e.preventDefault();
+
+            // Check if link exists
+            fetch(link.href, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = link.href;
+                    } else {
+                        // Link broken -> Redirect to 404
+                        window.location.href = '404.html';
+                    }
+                })
+                .catch(() => {
+                    // Fallback (e.g. file:// protocol where fetch fails)
+                    // We try to navigate naturally. If file missing, browser shows error.
+                    window.location.href = link.href;
+                });
+        });
+    </script>
+</body>
+
+</html>
