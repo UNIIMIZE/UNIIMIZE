@@ -31,6 +31,29 @@
         rel="stylesheet">
 
     <style>
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .cs-visual:not(.img-loaded),
+        .service-visual:not(.img-loaded),
+        .blog-card-image:not(.img-loaded),
+        .post-image-container:not(.img-loaded),
+        .team-photo:not(.img-loaded),
+        .big-hero-image:not(.img-loaded) {
+            background: linear-gradient(90deg, var(--clr-card) 25%, var(--clr-border) 50%, var(--clr-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        .cs-visual.img-loaded,
+        .service-visual.img-loaded,
+        .blog-card-image.img-loaded,
+        .post-image-container.img-loaded,
+        .team-photo.img-loaded,
+        .big-hero-image.img-loaded {
+            animation: none;
+            background: none;
+        }
 
         @keyframes shimmer {
             0% { background-position: 200% 0; }
@@ -41,13 +64,7 @@
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
         }
-        img {
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-        }
-        img.loaded {
-            opacity: 1;
-        }
+        
 
         img {
             border-radius: 25px;
@@ -193,16 +210,18 @@
     </div>
 
 
+    
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const images = document.querySelectorAll("img");
-            images.forEach(img => {
-                if (img.complete) {
-                    img.classList.add("loaded");
+            document.querySelectorAll(".cs-visual img, .service-visual img, .blog-card-image img, .post-image-container img, .team-photo img, .big-hero-image img").forEach(img => {
+                const container = img.closest(".cs-visual, .service-visual, .blog-card-image, .post-image-container, .team-photo, .big-hero-image");
+                if (!container) return;
+                const markLoaded = () => container.classList.add("img-loaded");
+                if (img.complete && img.naturalWidth > 0) {
+                    markLoaded();
                 } else {
-                    img.addEventListener("load", () => {
-                        img.classList.add("loaded");
-                    });
+                    img.addEventListener("load", markLoaded);
+                    img.addEventListener("error", markLoaded);
                 }
             });
         });
