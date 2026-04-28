@@ -98,12 +98,7 @@
   
   <!-- GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-   window.dataLayer=window.dataLayer||[];
-   function gtag(){dataLayer.push(arguments);}
-   gtag('js',new Date());
-   gtag('config','G-XXXXXXXXXX');
-  </script>
+  
   <style>
         @keyframes shimmer {
             0% { background-position: 200% 0; }
@@ -176,14 +171,18 @@
     }
 
     body {
+
       font-family: var(--font-body);
       background-color: var(--clr-cream);
       color: var(--clr-muted);
       line-height: 1.8;
       font-size: 16px;
-      opacity: 0;
-      animation: fadeIn 0.4s ease forwards;
+      opacity: 1;
+      
     }
+        body.loaded {
+            animation: fadeIn 0.4s ease forwards;
+        }
 
     @keyframes fadeIn {
       to { opacity: 1; }
@@ -1109,6 +1108,7 @@
 
     // Scroll Reveal
     document.body.classList.add('js-ready');
+        if (!('IntersectionObserver' in window)) { document.querySelectorAll('.reveal').forEach(el => el.classList.add('active')); }
         const revealElements = document.querySelectorAll('.reveal');
     
     const revealOptions = {
@@ -1232,5 +1232,7 @@
             });
         });
     </script>
+
+    <script>window.addEventListener("load", function(){ document.body.classList.add("loaded"); });</script>
 </body>
 </html>

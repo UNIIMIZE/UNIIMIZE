@@ -30,21 +30,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
-
-    <!-- Google Analytics 4 (Critical for conversion tracking) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-
-        // Conversion event
-        gtag('event', 'generate_lead', {
-            'currency': 'GBP',
-            'value': 100.00
-        });
-    </script>
     <style>
         @keyframes shimmer {
             0% { background-position: 200% 0; }
@@ -117,17 +102,21 @@
         }
 
         body {
+
             font-family: var(--font-body);
             background-color: var(--clr-cream);
             color: var(--clr-muted);
             line-height: 1.8;
             font-size: 16px;
-            opacity: 0;
-            animation: fadeIn 0.4s ease forwards;
+            opacity: 1;
+            
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+        }
+        body.loaded {
+            animation: fadeIn 0.4s ease forwards;
         }
 
         @keyframes fadeIn {
@@ -266,6 +255,8 @@
             });
         });
     </script>
+
+    <script>window.addEventListener("load", function(){ document.body.classList.add("loaded"); });</script>
 </body>
 
 </html>
