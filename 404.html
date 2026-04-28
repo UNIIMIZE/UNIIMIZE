@@ -15,6 +15,24 @@
         rel="stylesheet">
 
     <style>
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .cs-visual, .service-visual, .blog-card-image, .post-image-container, .team-photo, .big-hero-image {
+            background: linear-gradient(90deg, var(--clr-card) 25%, var(--clr-border) 50%, var(--clr-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        img {
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        img.loaded {
+            opacity: 1;
+        }
+
         img {
             border-radius: 25px;
         }
@@ -154,6 +172,21 @@
         <a href="/" class="btn btn-primary">&larr; Return to Base</a>
     </div>
 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const images = document.querySelectorAll("img");
+            images.forEach(img => {
+                if (img.complete) {
+                    img.classList.add("loaded");
+                } else {
+                    img.addEventListener("load", () => {
+                        img.classList.add("loaded");
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
