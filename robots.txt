@@ -3,5 +3,6 @@ Disallow: /thank-you.html
 Disallow: /404.html
 Disallow: /*.py
 
-Sitemap: https://uniimize.com/sitemap.xml
+Sitemap: https://uniimize.com/page.xml
 Sitemap: https://uniimize.com/blog.xml
+Sitemap: https://uniimize.com/case-study.xml
