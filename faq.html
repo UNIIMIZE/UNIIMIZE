@@ -62,13 +62,52 @@
         },
         {
           "@type": "Question",
+          "name": "Where is Uniimize located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We are based in India and serve clients locally and globally across multiple industries."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What industries do you work with?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We work with e-commerce, real estate, education, healthcare, hospitality, SaaS, and local businesses, among others."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What makes Uniimize different from other agencies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We combine creative thinking with data-backed strategies, offer personalized attention to every client, and focus on measurable results — not just vanity metrics."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "What services does Uniimize offer?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "We offer SEO, social media marketing, paid advertising (Google & Meta Ads), content marketing, email marketing, website design & development, branding, and influencer marketing."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "How much do your services cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pricing depends on the scope of work, platforms involved, and your goals. Contact us for a custom quote."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to see results?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on the service. SEO typically takes 3–6 months, while paid ads can show results within the first few weeks."
+          }
         }
-        /* More added via JS or manually for full SEO */
       ]
     }
     </script>
@@ -80,6 +119,22 @@
         href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap"
         rel="stylesheet">
     <style>
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .cs-visual, .service-visual, .blog-card-image, .post-image-container, .team-photo, .big-hero-image {
+            background: linear-gradient(90deg, var(--clr-card) 25%, var(--clr-border) 50%, var(--clr-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        img { border-radius: 25px; }
+
+        ::-moz-selection { background: var(--clr-blue); color: var(--clr-cream); }
+        ::selection { background: var(--clr-blue); color: var(--clr-cream); }
+
         :root {
             --clr-cream: #FDF0D5;
             --clr-blue: #00A8E8;
@@ -91,14 +146,10 @@
             --clr-blue-light: #E6F6FD;
             --font-head: 'Instrument Serif', serif;
             --font-body: 'Inter', sans-serif;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: 0.3s ease;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-body);
@@ -106,22 +157,25 @@
             color: var(--clr-muted);
             line-height: 1.8;
             font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        h1, h2, h3, .logo-text {
+        body.loaded { opacity: 1; }
+
+        h1, h2, h3, h4, h5, h6, .logo-text, .stat-number {
             font-family: var(--font-head);
             color: var(--clr-black);
             font-weight: 400;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        h1 { font-size: 96px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 24px; }
+        h2 { font-size: 64px; line-height: 1.1; margin-bottom: 24px; }
+        h3 { font-size: 40px; line-height: 1.2; margin-bottom: 16px; }
 
-        /* Header Styles */
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Navigation (Same as other pages) */
         .header {
             position: fixed;
             top: 0;
@@ -140,46 +194,23 @@
             padding: 16px 0;
         }
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
+        .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .logo-text { font-size: 22px; color: var(--clr-black); }
+        .logo svg { width: 16px; height: 16px; fill: var(--clr-blue); }
 
-        .logo-text {
-            font-size: 22px;
-        }
-
-        .logo svg {
-            width: 16px;
-            height: 16px;
-            fill: var(--clr-blue);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links > a, .dropdown > a {
             font-size: 14px;
             font-weight: 500;
             color: var(--clr-muted);
+            position: relative;
+            padding-bottom: 4px;
             text-decoration: none;
-            transition: var(--transition);
         }
 
-        .nav-links a:hover {
-            color: var(--clr-black);
-        }
+        .nav-links > a:hover, .dropdown > a:hover { color: var(--clr-black); }
 
         .btn {
             display: inline-flex;
@@ -189,284 +220,172 @@
             border-radius: 8px;
             font-weight: 500;
             font-size: 15px;
-            text-decoration: none;
+            cursor: pointer;
             transition: var(--transition);
             border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--clr-blue); color: #fff; }
+        .btn-primary:hover { background: #0090C8; }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--clr-black);
+            font-size: 24px;
             cursor: pointer;
+            z-index: 1001;
         }
 
-        .btn-primary {
-            background: var(--clr-blue);
-            color: #fff;
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--clr-cream);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 100px 40px 40px;
+            gap: 8px;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -4px 0 32px rgba(0,0,0,0.1);
+            border-left: 1px solid var(--clr-border);
         }
 
-        .btn-primary:hover {
-            background: #0090C8;
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-menu a {
+            font-size: 20px;
+            font-family: var(--font-head);
+            color: var(--clr-black);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--clr-border);
+            text-decoration: none;
         }
 
-        /* Hero & Search */
-        .faq-hero {
-            padding: 180px 0 100px;
-            text-align: center;
-            background: linear-gradient(to bottom, var(--clr-blue-light) 0%, var(--clr-cream) 100%);
-        }
-
-        .faq-hero h1 {
-            font-size: clamp(48px, 8vw, 96px);
-            margin-bottom: 32px;
-        }
-
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
+        /* FAQ Content Specific */
+        .faq-hero { padding: 180px 0 64px; text-align: center; }
+        .search-wrap { max-width: 600px; margin: 40px auto; position: relative; }
+        .search-bar {
             width: 100%;
             padding: 20px 32px;
-            padding-right: 60px;
             border-radius: 100px;
             border: 1px solid var(--clr-border);
             background: #fff;
             font-family: var(--font-body);
-            font-size: 18px;
+            font-size: 16px;
             outline: none;
-            transition: var(--transition);
             box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            transition: var(--transition);
         }
+        .search-bar:focus { border-color: var(--clr-blue); box-shadow: 0 8px 30px rgba(0,168,232,0.1); }
 
-        .search-input:focus {
-            border-color: var(--clr-blue);
-            box-shadow: 0 4px 30px rgba(0, 168, 232, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 24px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--clr-muted);
-            pointer-events: none;
-        }
-
-        /* Filters */
-        .filter-section {
-            padding: 40px 0;
-            position: sticky;
-            top: 80px;
-            z-index: 100;
-            background: var(--clr-cream);
-        }
-
-        .filter-scroll {
+        .filter-tabs {
             display: flex;
             gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
             justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 64px;
         }
-
-        .filter-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .filter-btn {
+        .filter-tab {
             padding: 10px 24px;
             border-radius: 100px;
             background: #fff;
             border: 1px solid var(--clr-border);
             font-size: 14px;
             font-weight: 500;
-            white-space: nowrap;
             cursor: pointer;
             transition: var(--transition);
             color: var(--clr-muted);
         }
+        .filter-tab.active { background: var(--clr-blue); color: #fff; border-color: var(--clr-blue); }
 
-        .filter-btn.active {
-            background: var(--clr-blue);
-            color: #fff;
-            border-color: var(--clr-blue);
-        }
-
-        /* FAQ Accordion */
-        .faq-list {
-            max-width: 800px;
-            margin: 40px auto 120px;
-        }
-
-        .faq-category-title {
-            font-size: 32px;
-            margin: 60px 0 30px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--clr-border);
-        }
-
+        .faq-grid { max-width: 800px; margin: 0 auto 120px; }
+        .faq-section-header { font-size: 32px; margin: 60px 0 24px; color: var(--clr-black); }
         .faq-item {
-            margin-bottom: 16px;
+            background: #fff;
             border: 1px solid var(--clr-border);
             border-radius: 16px;
-            background: #fff;
+            margin-bottom: 16px;
             overflow: hidden;
             transition: var(--transition);
         }
-
-        .faq-item:hover {
-            border-color: var(--clr-blue);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-        }
-
-        .faq-question {
+        .faq-item:hover { border-color: var(--clr-blue); }
+        .faq-trigger {
             padding: 24px 32px;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: none;
+            border: none;
+            text-align: left;
             cursor: pointer;
-            user-select: none;
-        }
-
-        .faq-question h3 {
             font-family: var(--font-body);
             font-size: 18px;
             font-weight: 500;
             color: var(--clr-black);
-            line-height: 1.4;
         }
-
-        .faq-icon {
-            width: 20px;
-            height: 20px;
-            transition: var(--transition);
-            flex-shrink: 0;
-            margin-left: 20px;
-        }
-
-        .faq-answer {
+        .faq-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: max-height 0.3s ease;
             background: var(--clr-blue-light);
         }
+        .faq-inner { padding: 0 32px 32px; color: var(--clr-muted); font-size: 16px; }
+        .faq-item.open .faq-content { max-height: 500px; }
+        .faq-plus { font-size: 24px; color: var(--clr-blue); transition: transform 0.3s ease; }
+        .faq-item.open .faq-plus { transform: rotate(45deg); }
 
-        .faq-answer-inner {
-            padding: 0 32px 32px;
-            font-size: 16px;
-            color: var(--clr-muted);
-        }
+        /* CTA Section (Same as index.html) */
+        .cta-section { background: var(--clr-blue); color: #fff; text-align: center; padding: 120px 0; }
+        .cta-section h2, .cta-section p { color: #fff; }
+        .btn-cta { background: #fff; color: var(--clr-blue); font-weight: 500; }
+        .btn-cta:hover { background: var(--clr-cream); }
 
-        .faq-item.open .faq-answer {
-            max-height: 500px; /* Large enough to fit content */
-        }
-
-        .faq-item.open .faq-icon {
-            transform: rotate(45deg);
-        }
-
-        .faq-item.hidden {
-            display: none;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 120px 0;
-            background: var(--clr-blue);
-            color: #fff;
-            text-align: center;
-            border-radius: 40px;
-            margin: 0 24px 80px;
-        }
-
-        .cta-section h2 {
-            color: #fff;
-            font-size: 64px;
-            margin-bottom: 24px;
-        }
-
-        .cta-section p {
-            color: rgba(255,255,255,0.8);
-            font-size: 20px;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn-white {
-            background: #fff;
-            color: var(--clr-blue);
-        }
-
-        .btn-white:hover {
-            background: var(--clr-cream);
-        }
-
-        /* Footer */
+        /* Footer (Same as index.html) */
         .footer {
             background: var(--clr-dark);
             color: var(--clr-cream);
             padding: 100px 0 40px;
+            border-top: 1px solid var(--clr-blue);
         }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 64px; margin-bottom: 80px; }
+        .footer-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; text-decoration: none; }
+        .footer-logo svg { fill: var(--clr-blue); width: 16px; height: 16px; }
+        .footer-logo-text { font-family: var(--font-head); font-size: 22px; color: var(--clr-cream); }
+        .footer p { color: rgba(253, 240, 213, 0.5); font-size: 14px; }
+        .footer h5 { color: var(--clr-cream); font-size: 14px; font-family: var(--font-body); font-weight: 500; margin-bottom: 24px; }
+        .footer-links { display: flex; flex-direction: column; gap: 16px; }
+        .footer-links a { color: rgba(253, 240, 213, 0.5); font-size: 14px; text-decoration: none; }
+        .footer-links a:hover { color: var(--clr-blue); }
+        .footer-bottom { display: flex; justify-content: space-between; padding-top: 32px; border-top: 1px solid rgba(253, 240, 213, 0.1); font-size: 13px; color: rgba(253, 240, 213, 0.5); }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1.5fr;
-            gap: 64px;
-            margin-bottom: 80px;
-        }
-
-        .footer h5 {
-            color: #fff;
-            margin-bottom: 24px;
-            font-family: var(--font-body);
-            font-weight: 500;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .footer-links a {
-            color: rgba(253, 240, 213, 0.5);
-            text-decoration: none;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .footer-links a:hover {
-            color: var(--clr-blue);
-        }
-
-        /* Animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 1024px) {
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 72px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 48px; }
         }
-
         @media (max-width: 768px) {
             h1 { font-size: 56px; }
-            .cta-section h2 { font-size: 40px; }
-            .nav-links { display: none; }
+            .nav-links, .header-cta { display: none; }
+            .mobile-menu-btn { display: block; }
             .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZ3K2D48" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+
     <!-- HEADER -->
     <header class="header" id="header">
         <div class="container nav-container">
@@ -479,504 +398,405 @@
 
             <nav class="nav-links">
                 <a href="/">Home</a>
-                <a href="/services">Services</a>
+                <div class="dropdown">
+                    <a href="/services">Services</a>
+                </div>
                 <a href="/case-studies">Case Studies</a>
                 <a href="/about">About</a>
                 <a href="/blog">Blog</a>
                 <a href="/contact">Contact</a>
             </nav>
 
-            <a href="/contact" class="btn btn-primary">Get Free Audit</a>
+            <a href="/contact" class="btn btn-primary header-cta">Get Free Audit &rarr;</a>
+
+            <button class="mobile-menu-btn" id="mobileBtn">☰</button>
         </div>
     </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/case-studies">Case Studies</a>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+    </div>
 
     <!-- HERO -->
     <section class="faq-hero">
         <div class="container">
             <div class="reveal">
                 <span class="eyebrow" style="color: var(--clr-blue); font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; display: block; margin-bottom: 16px;">Support Center</span>
-                <h1>How can we <span style="color: var(--clr-blue);">help?</span></h1>
+                <h1>Common <span style="color: var(--clr-blue); font-style: italic;">Questions.</span></h1>
+                <p>Everything you need to know about scaling your brand with Uniimize.</p>
                 
-                <div class="search-container">
-                    <input type="text" id="faqSearch" class="search-input" placeholder="Search for questions...">
-                    <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+                <div class="search-wrap">
+                    <input type="text" id="faqSearch" class="search-bar" placeholder="Search for a question (e.g. SEO, pricing)...">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- FILTERS -->
-    <div class="filter-section">
-        <div class="container">
-            <div class="filter-scroll">
-                <button class="filter-btn active" data-filter="all">All Questions</button>
-                <button class="filter-btn" data-filter="agency">About Agency</button>
-                <button class="filter-btn" data-filter="services">Services</button>
-                <button class="filter-btn" data-filter="pricing">Pricing</button>
-                <button class="filter-btn" data-filter="results">Results</button>
-                <button class="filter-btn" data-filter="working">Process</button>
-                <button class="filter-btn" data-filter="general">General Marketing</button>
-            </div>
+    <div class="container">
+        <div class="filter-tabs reveal">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="agency">Agency</button>
+            <button class="filter-tab" data-filter="services">Services</button>
+            <button class="filter-tab" data-filter="pricing">Pricing</button>
+            <button class="filter-tab" data-filter="results">Results</button>
+            <button class="filter-tab" data-filter="working">Working</button>
+            <button class="filter-tab" data-filter="general">General</button>
         </div>
     </div>
 
     <!-- FAQ LIST -->
-    <section class="faq-list-section">
-        <div class="container">
-            <div id="faqContainer" class="faq-list">
-                <!-- Agency Section -->
-                <div class="faq-group" data-category="agency">
-                    <h2 class="faq-category-title">About the Agency</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is Uniimize?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Uniimize is a full-service digital marketing agency founded by Bhuvesh Tyagi. Uniimize helps businesses grow their online presence through data-driven strategies, creative content, and performance-focused campaigns.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Where is Uniimize located?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We are based in India and serve clients locally and globally across multiple industries.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What industries do you work with?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We work with e-commerce, real estate, education, healthcare, hospitality, SaaS, and local businesses, among others.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What makes Uniimize different from other agencies?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We combine creative thinking with data-backed strategies, offer personalized attention to every client, and focus on measurable results — not just vanity metrics.
-                            </div>
-                        </div>
-                    </div>
+    <section class="container faq-grid">
+        <!-- Agency Section -->
+        <div class="faq-group" data-category="agency">
+            <h2 class="faq-section-header">About the Agency</h2>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is Uniimize?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Uniimize is a full-service digital marketing agency founded by Bhuvesh Tyagi. Uniimize helps businesses grow their online presence through data-driven strategies, creative content, and performance-focused campaigns.</div>
                 </div>
-
-                <!-- Services Section -->
-                <div class="faq-group" data-category="services">
-                    <h2 class="faq-category-title">Services</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What services does Uniimize offer?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We offer SEO, social media marketing, paid advertising (Google & Meta Ads), content marketing, email marketing, website design & development, branding, and influencer marketing.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Do you offer custom packages?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes. Every client gets a tailored strategy based on their goals, budget, and industry.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Can you manage just one service, like only SEO or only ads?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Absolutely. You can hire us for a single service or a full-suite solution — your choice.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Do you offer one-time projects or ongoing retainers?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Both. We handle one-time projects like website builds or audits, as well as long-term monthly retainers.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Do you create content as part of your services?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes, our team handles copywriting, graphic design, video scripts, and creative assets as part of most service packages.
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Where is Uniimize located?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We are based in India and serve clients locally and globally across multiple industries.</div>
                 </div>
-
-                <!-- Pricing Section -->
-                <div class="faq-group" data-category="pricing">
-                    <h2 class="faq-category-title">Pricing & Packages</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>How much do your services cost?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Pricing depends on the scope of work, platforms involved, and your goals. Contact us for a custom quote.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Do you have fixed pricing or is everything custom?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We have base packages as a starting point, but we customize them to fit your specific needs and budget.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Is there a minimum contract period?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Most of our retainer packages start with a 3-month commitment to allow enough time to see real results.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Do you offer discounts for startups or long-term clients?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes, we have special pricing for startups and offer loyalty discounts for clients on long-term contracts.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What payment methods do you accept?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We accept bank transfers, UPI, and major online payment methods.
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What industries do you work with?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We work with e-commerce, real estate, education, healthcare, hospitality, SaaS, and local businesses, among others.</div>
                 </div>
-
-                <!-- Results Section -->
-                <div class="faq-group" data-category="results">
-                    <h2 class="faq-category-title">Results & Performance</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>How long does it take to see results?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                It depends on the service. SEO typically takes 3–6 months, while paid ads can show results within the first few weeks.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Can you guarantee results?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                No ethical agency can guarantee specific rankings or revenue numbers. We do guarantee transparent reporting, consistent effort, and data-driven optimizations.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>How do you measure success?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We track KPIs specific to your goals — leads, conversions, ROAS, organic traffic, engagement rates, and more.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Will I get regular reports?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes. We provide monthly performance reports and are available for review calls to walk you through the data.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What happens if a campaign isn't performing well?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                We analyze the data, identify the issue, and pivot the strategy. Ongoing optimization is a core part of our process.
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What makes Uniimize different from other agencies?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We combine creative thinking with data-backed strategies, offer personalized attention to every client, and focus on measurable results — not just vanity metrics.</div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Working with Clients Section -->
-                <div class="faq-group" data-category="working">
-                    <h2 class="faq-category-title">Working with Clients</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>How do we get started with Uniimize?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Reach out via our website or contact form. We'll schedule a free discovery call to understand your goals and recommend the right approach.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Will I have a dedicated point of contact?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes. Every client is assigned a dedicated account manager who is your main point of contact.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>How involved do I need to be in the process?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                As involved as you'd like. We handle everything independently but always keep you in the loop and seek your approval on key decisions.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Do you sign NDAs or confidentiality agreements?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes, we're happy to sign NDAs to protect your business information.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What information do you need from us to get started?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Business details, target audience, past marketing efforts, goals, competitors, and access to relevant platforms (ad accounts, website, analytics, etc.).
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Can I see examples of your previous work?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Yes. We can share relevant case studies and portfolio samples during our discovery call.
-                            </div>
-                        </div>
-                    </div>
+        <!-- Services Section -->
+        <div class="faq-group" data-category="services">
+            <h2 class="faq-section-header">Services</h2>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What services does Uniimize offer?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We offer SEO, social media marketing, paid advertising (Google & Meta Ads), content marketing, email marketing, website design & development, branding, and influencer marketing.</div>
                 </div>
-
-                <!-- General Section -->
-                <div class="faq-group" data-category="general">
-                    <h2 class="faq-category-title">Digital Marketing General</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is digital marketing?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Digital marketing is promoting your business through online channels — search engines, social media, email, websites, and paid ads — to reach and convert your target audience.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>Why does my business need digital marketing?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Your customers are online. Digital marketing helps you reach them where they are, build trust, generate leads, and grow revenue cost-effectively.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is SEO and why does it matter?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                SEO (Search Engine Optimization) improves your website's visibility on Google. Higher rankings mean more organic traffic and free, long-term leads.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is the difference between SEO and paid ads?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                SEO is a long-term strategy that builds organic visibility over time. Paid ads deliver immediate visibility but stop the moment you stop spending.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is social media marketing?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                It's the use of platforms like Instagram, Facebook, LinkedIn, and YouTube to build your brand, engage your audience, and drive traffic or sales.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is a content marketing strategy?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                It's a plan for consistently creating and distributing valuable content (blogs, videos, infographics) to attract, educate, and convert your target audience.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What is ROAS?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                ROAS (Return on Ad Spend) measures how much revenue you earn for every rupee/dollar spent on advertising. E.g., a ROAS of 4x means ₹4 earned per ₹1 spent.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>What platforms do you run ads on?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                Primarily Google Ads and Meta Ads (Facebook & Instagram). We also work with YouTube, LinkedIn, and others depending on your audience.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <h3>How do I know which digital marketing service is right for my business?</h3>
-                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        </div>
-                        <div class="faq-answer">
-                            <div class="faq-answer-inner">
-                                That's what our free discovery call is for. We'll assess your goals, audience, and budget and recommend the best starting point.
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Do you offer custom packages?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes. Every client gets a tailored strategy based on their goals, budget, and industry.</div>
                 </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Can you manage just one service, like only SEO or only ads?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Absolutely. You can hire us for a single service or a full-suite solution — your choice.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Do you offer one-time projects or ongoing retainers?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Both. We handle one-time projects like website builds or audits, as well as long-term monthly retainers.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Do you create content as part of your services?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes, our team handles copywriting, graphic design, video scripts, and creative assets as part of most service packages.</div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Pricing Section -->
+        <div class="faq-group" data-category="pricing">
+            <h2 class="faq-section-header">Pricing & Packages</h2>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>How much do your services cost?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Pricing depends on the scope of work, platforms involved, and your goals. Contact us for a custom quote.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Do you have fixed pricing or is everything custom?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We have base packages as a starting point, but we customize them to fit your specific needs and budget.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Is there a minimum contract period?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Most of our retainer packages start with a 3-month commitment to allow enough time to see real results.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Do you offer discounts for startups or long-term clients?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes, we have special pricing for startups and offer loyalty discounts for clients on long-term contracts.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What payment methods do you accept?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We accept bank transfers, UPI, and major online payment methods.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="faq-group" data-category="results">
+            <h2 class="faq-section-header">Results & Performance</h2>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>How long does it take to see results?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">It depends on the service. SEO typically takes 3–6 months, while paid ads can show results within the first few weeks.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Can you guarantee results?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">No ethical agency can guarantee specific rankings or revenue numbers. We do guarantee transparent reporting, consistent effort, and data-driven optimizations.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>How do you measure success?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We track KPIs specific to your goals — leads, conversions, ROAS, organic traffic, engagement rates, and more.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Will I get regular reports?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes. We provide monthly performance reports and are available for review calls to walk you through the data.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What happens if a campaign isn't performing well?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">We analyze the data, identify the issue, and pivot the strategy. Ongoing optimization is a core part of our process.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Working Section -->
+        <div class="faq-group" data-category="working">
+            <h2 class="faq-section-header">Working with Clients</h2>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>How do we get started with Uniimize?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Reach out via our website or contact form. We'll schedule a free discovery call to understand your goals and recommend the right approach.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Will I have a dedicated point of contact?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes. Every client is assigned a dedicated account manager who is your main point of contact.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>How involved do I need to be in the process?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">As involved as you'd like. We handle everything independently but always keep you in the loop and seek your approval on key decisions.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Do you sign NDAs or confidentiality agreements?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes, we're happy to sign NDAs to protect your business information.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What information do you need from us to get started?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Business details, target audience, past marketing efforts, goals, competitors, and access to relevant platforms (ad accounts, website, analytics, etc.).</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Can I see examples of your previous work?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Yes. We can share relevant case studies and portfolio samples during our discovery call.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- General Section -->
+        <div class="faq-group" data-category="general">
+            <h2 class="faq-section-header">General Marketing</h2>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is digital marketing?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Digital marketing is promoting your business through online channels — search engines, social media, email, websites, and paid ads — to reach and convert your target audience.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>Why does my business need digital marketing?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Your customers are online. Digital marketing helps you reach them where they are, build trust, generate leads, and grow revenue cost-effectively.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is SEO and why does it matter?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">SEO (Search Engine Optimization) improves your website's visibility on Google. Higher rankings mean more organic traffic and free, long-term leads.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is the difference between SEO and paid ads?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">SEO is a long-term strategy that builds organic visibility over time. Paid ads deliver immediate visibility but stop the moment you stop spending.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is social media marketing?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">It's the use of platforms like Instagram, Facebook, LinkedIn, and YouTube to build your brand, engage your audience, and drive traffic or sales.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is a content marketing strategy?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">It's a plan for consistently creating and distributing valuable content (blogs, videos, infographics) to attract, educate, and convert your target audience.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What is ROAS?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">ROAS (Return on Ad Spend) measures how much revenue you earn for every rupee/dollar spent on advertising. E.g., a ROAS of 4x means ₹4 earned per ₹1 spent.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>What platforms do you run ads on?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">Primarily Google Ads and Meta Ads (Facebook & Instagram). We also work with YouTube, LinkedIn, and others depending on your audience.</div>
+                </div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-trigger">
+                    <span>How do I know which digital marketing service is right for my business?</span>
+                    <span class="faq-plus">+</span>
+                </button>
+                <div class="faq-content">
+                    <div class="faq-inner">That's what our free discovery call is for. We'll assess your goals, audience, and budget and recommend the best starting point.</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA SECTION -->
-    <section class="cta-section container">
-        <div class="reveal">
-            <h2>Ready to <span style="font-style: italic;">scale?</span></h2>
-            <p>Don't stay confused. Book a free strategy call today and let's map out your brand's growth journey together.</p>
-            <div style="display: flex; gap: 16px; justify-content: center;">
-                <a href="/contact" class="btn btn-white">Book Free Strategy Call</a>
-                <a href="/contact" class="btn btn-ghost" style="color: #fff; border: 1px solid rgba(255,255,255,0.3);">Get Free Audit</a>
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="reveal">
+                <h2>Scale with <span style="font-style: italic;">Obsession.</span></h2>
+                <p>Stop wasting spend. Start multiplying revenue. Book your free strategy audit today.</p>
+                <a href="/contact" class="btn btn-cta">Get Free Audit &rarr;</a>
             </div>
         </div>
     </section>
@@ -984,98 +804,80 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <a href="/" class="logo" style="margin-bottom: 24px;">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
-                        <span class="logo-text" style="color: #fff;">Uniimize</span>
+            <div class="footer-grid reveal">
+                <div class="footer-col">
+                    <a href="/" class="footer-logo">
+                        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                        <span class="footer-logo-text">Uniimize</span>
                     </a>
-                    <p style="color: rgba(255,255,255,0.5); font-size: 14px;">Measurable growth for ambitious brands worldwide. Founded by Bhuvesh Tyagi.</p>
+                    <p style="margin-bottom: 8px;">Maximise Every Click. Minimise Wasted Spend.</p>
+                    <p>A new-age digital marketing agency built for brands that want real results — not just reports.</p>
                 </div>
-                <div>
+                <div class="footer-col">
                     <h5>Services</h5>
                     <div class="footer-links">
                         <a href="/service-seo">SEO</a>
-                        <a href="/service-ppc">Paid Ads</a>
+                        <a href="/service-ppc">PPC / Paid Ads</a>
                         <a href="/service-social">Social Media</a>
                         <a href="/service-content">Content Marketing</a>
+                        <a href="/service-webdev">Web Development</a>
                     </div>
                 </div>
-                <div>
+                <div class="footer-col">
                     <h5>Company</h5>
                     <div class="footer-links">
                         <a href="/about">About</a>
                         <a href="/case-studies">Case Studies</a>
                         <a href="/blog">Blog</a>
                         <a href="/faq">FAQs</a>
+                        <a href="/contact">Contact</a>
                     </div>
                 </div>
-                <div>
-                    <h5>Contact</h5>
+                <div class="footer-col">
+                    <h5>Connect</h5>
                     <div class="footer-links">
-                        <a href="mailto:hello@uniimize.com">hello@uniimize.com</a>
-                        <a href="/contact">Book a Call</a>
+                        <a href="mailto:uniimize@gmail.com">uniimize@gmail.com</a>
+                        <a href="https://wa.me/917579958381" target="_blank">WhatsApp</a>
+                        <a href="https://instagram.com/uniimize" target="_blank">Instagram</a>
                     </div>
                 </div>
             </div>
-            <div style="padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,0.3);">
-                <p>&copy; 2026 Uniimize. All rights reserved.</p>
-                <div style="display: flex; gap: 24px;">
-                    <a href="/privacy-policy" style="color: inherit; text-decoration: none;">Privacy</a>
-                    <a href="/terms-of-service" style="color: inherit; text-decoration: none;">Terms</a>
-                </div>
+            <div class="footer-bottom reveal">
+                <div>&copy; 2026 Uniimize. All rights reserved.</div>
+                <div>Crafted with obsession.</div>
             </div>
         </div>
     </footer>
 
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop">&uarr;</button>
+
     <script>
-        // Header Scroll Effect
+        // Common Logic
+        const header = document.getElementById('header');
+        const backToTop = document.getElementById('backToTop');
+        const mobileBtn = document.getElementById('mobileBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
         window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            if (window.scrollY > 60) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+            if (window.scrollY > 400) backToTop.style.display = 'flex';
+            else backToTop.style.display = 'none';
         });
 
-        // FAQ Toggle
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                const isOpen = item.classList.contains('open');
-                
-                // Close all other items
-                document.querySelectorAll('.faq-item').forEach(otherItem => {
-                    otherItem.classList.remove('open');
-                });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-                if (!isOpen) {
-                    item.classList.add('open');
-                }
-            });
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            mobileBtn.innerHTML = mobileMenu.classList.contains('open') ? '&#10005;' : '&#9776;';
         });
 
-        // Filter Logic
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const faqGroups = document.querySelectorAll('.faq-group');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const filter = btn.getAttribute('data-filter');
-
-                faqGroups.forEach(group => {
-                    if (filter === 'all' || group.getAttribute('data-category') === filter) {
-                        group.style.display = 'block';
-                    } else {
-                        group.style.display = 'none';
-                    }
-                });
+        // FAQ Specific Logic
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.parentElement;
+                item.classList.toggle('open');
             });
         });
 
@@ -1083,50 +885,37 @@
         const searchInput = document.getElementById('faqSearch');
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            const faqItems = document.querySelectorAll('.faq-item');
-            
-            // If searching, show all groups to search through everything
-            if (term.length > 0) {
-                faqGroups.forEach(group => group.style.display = 'block');
-            }
-
-            faqItems.forEach(item => {
-                const question = item.querySelector('h3').textContent.toLowerCase();
-                const answer = item.querySelector('.faq-answer-inner').textContent.toLowerCase();
-                
-                if (question.includes(term) || answer.includes(term)) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-
-            // Hide groups that have no matching items
-            faqGroups.forEach(group => {
-                const visibleItems = group.querySelectorAll('.faq-item:not(.hidden)');
-                if (visibleItems.length === 0) {
-                    group.style.display = 'none';
-                } else {
-                    group.style.display = 'block';
-                }
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(term) ? 'block' : 'none';
             });
         });
 
-        // Reveal Animation
-        const observerOptions = {
-            threshold: 0.1
-        };
+        // Filter Logic
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filter = tab.dataset.filter;
+                document.querySelectorAll('.faq-group').forEach(group => {
+                    group.style.display = (filter === 'all' || group.dataset.category === filter) ? 'block' : 'none';
+                });
+            });
+        });
 
-        const observer = new IntersectionObserver((entries) => {
+        // Reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        window.addEventListener('load', () => document.body.classList.add('loaded'));
     </script>
 </body>
-
 </html>
