@@ -4,3 +4,4 @@ Disallow: /404.html
 Disallow: /*.py
 
 Sitemap: https://uniimize.com/sitemap.xml
+Sitemap: https://uniimize.com/blog.xml
